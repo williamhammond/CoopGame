@@ -12,22 +12,22 @@ UCLASS()
 class COOPGAME_API ASWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASWeapon();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Component")
 	USkeletalMeshComponent* MeshComponent;
 
-public:	
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	void Fire();
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	
-	
 };
