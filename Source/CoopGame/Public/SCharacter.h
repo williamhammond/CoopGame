@@ -24,11 +24,24 @@ protected:
 	void BeginCrouch();
 	void EndCrouch();
 
+	void Zoom();
+	void EndZoom();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UCameraComponent* CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category="Player")
+	float ZoomedFOV;
+
+	UPROPERTY(EditDefaultsOnly, Category="Player", meta=(ClampMin = 0.1, ClampMax = 100.0))
+	float ZoomInterpSpeed;
+
+	bool bWantsToZoom;
+
+	float DefaultFOV;
 
 public:
 	virtual void Tick(float DeltaTime) override;
