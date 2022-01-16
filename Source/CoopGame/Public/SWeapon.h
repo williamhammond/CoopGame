@@ -9,6 +9,8 @@
 class USkeletalMeshComponent;
 class UDamageType;
 class UParticleSystem;
+class USoundBase;
+class UAnimSequence;
 
 UCLASS()
 class COOPGAME_API ASWeapon : public AActor
@@ -25,14 +27,14 @@ protected:
 	USkeletalMeshComponent* MeshComponent;
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	void Fire();
+	virtual void Fire();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	FName MuzzleSocketName;
-	
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	FName TracerTargetName;
 
@@ -41,9 +43,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* ImpactEffect;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* TracerEffect;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
+	USoundBase* FireSound;
 
 
 public:

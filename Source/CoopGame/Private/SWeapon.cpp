@@ -12,8 +12,8 @@
 // Sets default values
 ASWeapon::ASWeapon()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = MeshComponent;
 
@@ -30,7 +30,10 @@ void ASWeapon::BeginPlay()
 void ASWeapon::Fire()
 {
 	AActor* MyOwner = GetOwner();
-	if (!MyOwner) return;
+	if (!MyOwner)
+	{
+		return;
+	}
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
@@ -44,7 +47,7 @@ void ASWeapon::Fire()
 	QueryParams.AddIgnoredActor(MyOwner);
 	QueryParams.AddIgnoredActor(this);
 	QueryParams.bTraceComplex = true;
-	
+
 	FVector TracerEndpoint = TraceEnd;
 
 	FHitResult Hit;
@@ -66,6 +69,7 @@ void ASWeapon::Fire()
 
 	if (MuzzleEffect)
 	{
+		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComponent, MuzzleSocketName);
 		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComponent, MuzzleSocketName);
 	}
 
