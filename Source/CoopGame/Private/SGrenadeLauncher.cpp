@@ -37,10 +37,7 @@ void ASGrenadeLauncher::Fire()
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
-		// FVector ShotDirection = EyeRotation.Vector();
-
 		const FVector MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
-		const FRotator MuzzleRotation = MeshComponent->GetSocketRotation(MuzzleSocketName);
 
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride =
@@ -48,10 +45,7 @@ void ASGrenadeLauncher::Fire()
 		ActorSpawnParams.Instigator = MyOwner->GetInstigatorController()->GetPawn();
 		ActorSpawnParams.Owner = this;
 
-		GetWorld()->SpawnActor<ASGrenade>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
-		// ASGrenade* grenade = GetWorld()->SpawnActorDeferred<ASGrenade>(ProjectileClass, MuzzleLocation, MuzzleRotation, GetOwner(), GetOwner()->Instigator);
-		// grenade->GetProjectileMovement()->bRotationFollowsVelocity = false;
-		// grenade->GetProjectileMovement()->SetVelocityInLocalSpace(EyeLocation);
+		GetWorld()->SpawnActor<ASGrenade>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
 	}
 }
 
