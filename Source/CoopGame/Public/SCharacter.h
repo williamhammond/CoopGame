@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SWeapon.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
@@ -42,6 +43,17 @@ protected:
 	bool bWantsToZoom;
 
 	float DefaultFOV;
+
+	UPROPERTY(EditDefaultsOnly, Category="Player")
+	ASWeapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category="Player")
+	TSubclassOf<ASWeapon> StarterWeaponClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category="Player")
+	FName WeaponAttachSocketName;
+
+	void Fire();
 
 public:
 	virtual void Tick(float DeltaTime) override;

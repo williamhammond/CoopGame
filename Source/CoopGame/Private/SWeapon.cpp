@@ -17,8 +17,6 @@ FAutoConsoleVariableRef CVarDebugWeaponDrawing(TEXT("COOP.DebugWeapons"),
 // Sets default values
 ASWeapon::ASWeapon()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = MeshComponent;
 
@@ -26,11 +24,6 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "BeamEnd";
 }
 
-// Called when the game starts or when spawned
-void ASWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-}
 
 void ASWeapon::Fire()
 {
@@ -90,8 +83,6 @@ void ASWeapon::Fire()
 	}
 }
 
-// Called every frame
-void ASWeapon::Tick(float DeltaTime)
+void ASWeapon::PlayFireEffects()
 {
-	Super::Tick(DeltaTime);
 }

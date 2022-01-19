@@ -21,13 +21,12 @@ public:
 	ASWeapon();
 
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Component")
 	USkeletalMeshComponent* MeshComponent;
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	virtual void Fire();
+
+	void PlayFireEffects();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;
@@ -46,11 +45,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* TracerEffect;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	USoundBase* FireSound;
-
-
+	
 public:
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	virtual void Fire();
 };
