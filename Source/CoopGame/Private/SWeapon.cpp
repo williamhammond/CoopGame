@@ -4,6 +4,7 @@
 
 #include "CoopGame.h"
 #include "DrawDebugHelpers.h"
+#include "TimerManager.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
@@ -26,6 +27,14 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "BeamEnd";
 
 	BaseDamage = 20.0f;
+
+	RateOfFire = 600.0f;
+}
+
+void ASWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	TimeBetweenShots = 60 / RateOfFire;
 }
 
 
@@ -63,10 +72,11 @@ void ASWeapon::Fire()
 
 		float EffectiveDamage = BaseDamage;
 		if (SurfaceType == SURFACE_FLESHVULNERABLE) EffectiveDamage *= 4.0f;
-		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(),
+		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit,
+		                                   MyOwner->GetInstigatorController(),
 		                                   this, DamageType);
 
-		
+
 		UParticleSystem* SelectedEffect = nullptr;
 		switch (SurfaceType)
 		{
@@ -87,6 +97,19 @@ void ASWeapon::Fire()
 	}
 	if (DebugWeaponDrawing > 0) DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 	PlayFireEffects(TracerEndpoint);
+	LastFireTime = GetWorld()->TimeSeconds;
+}
+
+void ASWeapon::StartFire()
+{
+	const float FirstDelay = FMath::Max(0.0f, LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetween_Shots, this, &ASWeapon::Fire, TimeBetweenShots, true,
+	                                FirstDelay);
+}
+
+void ASWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetween_Shots);
 }
 
 void ASWeapon::PlayFireEffects(FVector TracerEndpoint)

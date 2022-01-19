@@ -53,7 +53,8 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Player")
 	FName WeaponAttachSocketName;
 
-	void Fire();
+	void StartFire();
+	void StopFire();
 
 public:
 	virtual void Tick(float DeltaTime) override;

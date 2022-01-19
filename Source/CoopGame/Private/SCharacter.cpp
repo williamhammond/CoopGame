@@ -40,7 +40,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ASCharacter::Zoom);
 	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ASCharacter::EndZoom);
 
-	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::Fire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
 
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 50.0f;
@@ -99,9 +100,14 @@ void ASCharacter::EndZoom()
 	bWantsToZoom = false;
 }
 
-void ASCharacter::Fire()
+void ASCharacter::StartFire()
 {
-	if (CurrentWeapon) CurrentWeapon->Fire();
+	if (CurrentWeapon) CurrentWeapon->StartFire();
+}
+
+void ASCharacter::StopFire()
+{
+	if (CurrentWeapon) CurrentWeapon->StopFire();
 }
 
 void ASCharacter::Tick(float DeltaTime)
