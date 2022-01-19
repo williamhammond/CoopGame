@@ -2,11 +2,13 @@
 
 #include "SWeapon.h"
 
+#include "CoopGame.h"
 #include "DrawDebugHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVarDebugWeaponDrawing(TEXT("COOP.DebugWeapons"),
@@ -45,6 +47,7 @@ void ASWeapon::Fire()
 	QueryParams.AddIgnoredActor(MyOwner);
 	QueryParams.AddIgnoredActor(this);
 	QueryParams.bTraceComplex = true;
+	QueryParams.bReturnPhysicalMaterial = true;
 
 	FVector TracerEndpoint = TraceEnd;
 
@@ -57,15 +60,28 @@ void ASWeapon::Fire()
 
 		UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(),
 		                                   this, DamageType);
-		if (ImpactEffect)
+
+		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		UParticleSystem* SelectedEffect = nullptr;
+		switch (SurfaceType)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint,
+		case SURFACE_FLESHDEFAULT:
+		case SURFACE_FLESHVULNERABLE:
+			SelectedEffect = FleshImpactEvent;
+			break;
+		default:
+			SelectedEffect = DefaultImpactEffect;
+			break;
+		}
+
+		if (SelectedEffect)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint,
 			                                         Hit.ImpactNormal.Rotation());
 		}
 	}
 	if (DebugWeaponDrawing > 0) DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 	PlayFireEffects(TracerEndpoint);
-
 }
 
 void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
@@ -90,7 +106,7 @@ void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 	APawn* MyOwner = Cast<APawn>(GetOwner());
 	if (MyOwner)
 	{
-		APlayerController* PlayerController= Cast<APlayerController>(MyOwner -> GetController());
+		APlayerController* PlayerController = Cast<APlayerController>(MyOwner->GetController());
 		if (PlayerController)
 		{
 			PlayerController->ClientPlayCameraShake(FireCameraShake);
