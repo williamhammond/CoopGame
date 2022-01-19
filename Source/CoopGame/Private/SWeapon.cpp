@@ -52,7 +52,7 @@ void ASWeapon::Fire()
 	FVector TracerEndpoint = TraceEnd;
 
 	FHitResult Hit;
-	bool isHit = GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams);
+	bool isHit = GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams);
 	if (isHit)
 	{
 		TracerEndpoint = Hit.Location;
