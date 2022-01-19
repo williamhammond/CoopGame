@@ -64,7 +64,12 @@ void ASWeapon::Fire()
 		}
 	}
 	if (DebugWeaponDrawing > 0) DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
+	PlayFireEffects(TracerEndpoint);
 
+}
+
+void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
+{
 	if (MuzzleEffect)
 	{
 		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComponent, MuzzleSocketName);
@@ -73,7 +78,7 @@ void ASWeapon::Fire()
 
 	if (TracerEffect)
 	{
-		FVector MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
+		const FVector MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
 		UParticleSystemComponent* TracerComponent = UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(), TracerEffect, MuzzleLocation);
 		if (TracerComponent)
@@ -81,8 +86,14 @@ void ASWeapon::Fire()
 			TracerComponent->SetVectorParameter(TracerTargetName, TracerEndpoint);
 		}
 	}
-}
 
-void ASWeapon::PlayFireEffects()
-{
+	APawn* MyOwner = Cast<APawn>(GetOwner());
+	if (MyOwner)
+	{
+		APlayerController* PlayerController= Cast<APlayerController>(MyOwner -> GetController());
+		if (PlayerController)
+		{
+			PlayerController->ClientPlayCameraShake(FireCameraShake);
+		}
+	}
 }

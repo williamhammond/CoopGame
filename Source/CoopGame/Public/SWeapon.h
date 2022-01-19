@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraShake.h"
 #include "GameFramework/Actor.h"
 #include "SWeapon.generated.h"
 
@@ -26,7 +27,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 
-	void PlayFireEffects();
+	void PlayFireEffects(FVector TracerEndpoint);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;
@@ -48,6 +49,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	USoundBase* FireSound;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Weapon")
+	TSubclassOf<UCameraShake> FireCameraShake;
+	
 	
 public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
