@@ -15,7 +15,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="HealthComponent")
+	float DefaultHealth;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="HealthComponent")
 	float Health;
+
+	UFUNCTION()
+	void HandleTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	                      class AController* InstigatedBy, AActor* DamageCauser);
 };
