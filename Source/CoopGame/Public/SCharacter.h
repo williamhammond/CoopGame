@@ -54,7 +54,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Player")
 	FName WeaponAttachSocketName;
 
-	UPROPERTY(VisibleDefaultsOnly, Category="Player")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Player")
 	USHealthComponent* HealthComponent;
 
 	void StartFire();

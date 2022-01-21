@@ -129,6 +129,9 @@ void ASCharacter::OnHealthChanged(class USHealthComponent* HealthComp, float
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 		bDied = true;
+
+		DetachFromControllerPendingDestroy();
+		SetLifeSpan(10.0f);
 	}
 }
 
