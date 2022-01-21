@@ -119,7 +119,7 @@ void ASCharacter::StopFire()
 	if (CurrentWeapon) CurrentWeapon->StopFire();
 }
 
-void ASCharacter::OnHealthChanged(class USHealthComponent* HealthComp, float
+void ASCharacter::OnHealthChanged(class USHealthComponent* OwningHealthComp, float
                                   Health, float HealthDelta, const class UDamageType* DamageType,
                                   class AController* InstigatedBy, AActor* DamageCauser)
 {
