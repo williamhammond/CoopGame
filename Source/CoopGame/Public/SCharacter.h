@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SHealthComponent.h"
 #include "SWeapon.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
@@ -53,8 +54,18 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Player")
 	FName WeaponAttachSocketName;
 
+	UPROPERTY(VisibleDefaultsOnly, Category="Player")
+	USHealthComponent* HealthComponent;
+
 	void StartFire();
 	void StopFire();
+
+	UFUNCTION()
+	void OnHealthChanged(class USHealthComponent* HealthComp, float
+	                     Health, float HealthDelta, const class UDamageType* DamageType,
+	                     class AController* InstigatedBy, AActor* DamageCauser);
+	UPROPERTY(BlueprintReadOnly, Category="Player")
+	bool bDied;
 
 public:
 	virtual void Tick(float DeltaTime) override;

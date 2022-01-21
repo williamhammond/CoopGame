@@ -22,7 +22,12 @@ ASCharacter::ASCharacter()
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
-	
+
+	HealthComponent = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComponenet"));
+
+	ZoomedFOV = 65.0f;
+	ZoomInterpSpeed = 50.0f;
+
 	WeaponAttachSocketName = "WeaponSocket";
 }
 
@@ -46,9 +51,6 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
-
-	ZoomedFOV = 65.0f;
-	ZoomInterpSpeed = 50.0f;
 }
 
 FVector ASCharacter::GetPawnViewLocation() const
@@ -66,12 +68,15 @@ void ASCharacter::BeginPlay()
 	DefaultFOV = CameraComponent->FieldOfView;
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParameters);
+	CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator,
+	                                                 SpawnParameters);
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->SetOwner(this);
-		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		                                 WeaponAttachSocketName);
 	}
+	HealthComponent->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 }
 
 void ASCharacter::MoveForward(float Magnitude)
@@ -112,6 +117,19 @@ void ASCharacter::StartFire()
 void ASCharacter::StopFire()
 {
 	if (CurrentWeapon) CurrentWeapon->StopFire();
+}
+
+void ASCharacter::OnHealthChanged(class USHealthComponent* HealthComp, float
+                                  Health, float HealthDelta, const class UDamageType* DamageType,
+                                  class AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Health <= 0.0f && !bDied)
+	{
+		GetMovementComponent()->StopMovementImmediately();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		bDied = true;
+	}
 }
 
 void ASCharacter::Tick(float DeltaTime)
