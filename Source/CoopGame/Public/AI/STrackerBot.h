@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Sound/SoundCue.h"
 #include "STrackerBot.generated.h"
 
 class USHealthComponent;
@@ -54,12 +55,20 @@ protected:
 
 	void DamageSelf();
 
-	bool bExploded;
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	float SelfDamageInterval;
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	float ExplosionRadius;
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	float ExplosionDamage;
 
+	bool bExploded;
+	
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	USoundCue* SelfDestructSound;
+	
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	USoundCue* ExplodeSound;
 
 public:
 	virtual void Tick(float DeltaTime) override;
