@@ -39,6 +39,16 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="TrackerBot")
 	UMaterialInstanceDynamic* MaterialInstance;
 
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	UParticleSystem* ExplosionEffect;
+	void SelfDestruct();
+
+	bool bExploded;
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	float ExplosionRadius;
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	float ExplosionDamage;
+
 
 public:
 	virtual void Tick(float DeltaTime) override;
