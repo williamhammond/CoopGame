@@ -41,6 +41,11 @@ void ASWeapon::BeginPlay()
 
 void ASWeapon::Fire()
 {
+	if (Role < ROLE_Authority)
+	{
+		ServerFire();
+	}
+	
 	AActor* MyOwner = GetOwner();
 	if (!MyOwner)
 	{
@@ -76,11 +81,10 @@ void ASWeapon::Fire()
 		{
 			EffectiveDamage *= 4.0f;
 		}
+		
 		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit,
 		                                   MyOwner->GetInstigatorController(),
 		                                   this, DamageType);
-
-
 		UParticleSystem* SelectedEffect = nullptr;
 		switch (SurfaceType)
 		{
@@ -99,12 +103,23 @@ void ASWeapon::Fire()
 			                                         Hit.ImpactNormal.Rotation());
 		}
 	}
+	
 	if (DebugWeaponDrawing > 0)
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 	}
 	PlayFireEffects(TracerEndpoint);
 	LastFireTime = GetWorld()->TimeSeconds;
+}
+
+void ASWeapon::ServerFire_Implementation()
+{
+	Fire();
+}
+
+bool ASWeapon::ServerFire_Validate()
+{
+	return true;
 }
 
 void ASWeapon::StartFire()

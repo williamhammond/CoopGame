@@ -68,10 +68,14 @@ protected:
 	FTimerHandle TimerHandle_TimeBetween_Shots;
 
 	float LastFireTime;
-
-public:
+	
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	virtual void Fire();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
+
+public:
 
 	void StartFire();
 
