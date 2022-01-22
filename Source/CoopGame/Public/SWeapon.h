@@ -18,7 +18,8 @@ struct FHitScanTrace
 {
 	GENERATED_BODY()
 	UPROPERTY()
-	FVector_NetQuantize TraceFrom;
+	TEnumAsByte<EPhysicalSurface> SurfaceType;
+	
 	UPROPERTY()
 	FVector_NetQuantize TraceTo;
 };
@@ -39,6 +40,8 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 
 	void PlayFireEffects(FVector TracerEndpoint);
+
+	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;
