@@ -5,6 +5,7 @@
 #include "CoopGame.h"
 #include "DrawDebugHelpers.h"
 #include "TimerManager.h"
+#include "UnrealNetwork.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
@@ -45,7 +46,7 @@ void ASWeapon::Fire()
 	{
 		ServerFire();
 	}
-	
+
 	AActor* MyOwner = GetOwner();
 	if (!MyOwner)
 	{
@@ -81,7 +82,7 @@ void ASWeapon::Fire()
 		{
 			EffectiveDamage *= 4.0f;
 		}
-		
+
 		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit,
 		                                   MyOwner->GetInstigatorController(),
 		                                   this, DamageType);
@@ -103,12 +104,15 @@ void ASWeapon::Fire()
 			                                         Hit.ImpactNormal.Rotation());
 		}
 	}
-	
+
 	if (DebugWeaponDrawing > 0)
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 	}
-	PlayFireEffects(TracerEndpoint);
+	if (Role == ROLE_Authority)
+	{
+		HitScanTrace.TraceTo = TracerEndpoint;
+	}
 	LastFireTime = GetWorld()->TimeSeconds;
 }
 
@@ -120,6 +124,11 @@ void ASWeapon::ServerFire_Implementation()
 bool ASWeapon::ServerFire_Validate()
 {
 	return true;
+}
+
+void ASWeapon::OnRep_HitScanTrace()
+{
+	PlayFireEffects(HitScanTrace.TraceTo);
 }
 
 void ASWeapon::StartFire()
@@ -162,4 +171,10 @@ void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 			PlayerController->ClientPlayCameraShake(FireCameraShake);
 		}
 	}
+}
+
+void ASWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	DOREPLIFETIME_CONDITION(ASWeapon, HitScanTrace, COND_SkipOwner);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }

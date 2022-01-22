@@ -13,6 +13,16 @@ class UParticleSystem;
 class USoundBase;
 class UAnimSequence;
 
+USTRUCT()
+struct FHitScanTrace 
+{
+	GENERATED_BODY()
+	UPROPERTY()
+	FVector_NetQuantize TraceFrom;
+	UPROPERTY()
+	FVector_NetQuantize TraceTo;
+};
+
 UCLASS()
 class COOPGAME_API ASWeapon : public AActor
 {
@@ -74,6 +84,12 @@ protected:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerFire();
+
+	UPROPERTY(ReplicatedUsing=OnRep_HitScanTrace)
+	FHitScanTrace HitScanTrace;
+
+	UFUNCTION()
+	void OnRep_HitScanTrace();
 
 public:
 
