@@ -20,7 +20,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	virtual void Fire() override;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
 	TSubclassOf<ASGrenade> ProjectileClass;
 

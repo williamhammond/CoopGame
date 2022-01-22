@@ -25,16 +25,16 @@ protected:
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovement;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent*  MeshComponent;
-	
+	UStaticMeshComponent* MeshComponent;
+
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	float ExplosionRadius;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* ExplosionEffect;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;
 
@@ -50,7 +50,7 @@ public:
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-	
+
 	virtual void BeginDestroy() override;
 	virtual void LifeSpanExpired() override;
 };

@@ -19,7 +19,10 @@ void ASGrenadeLauncher::BeginPlay()
 void ASGrenadeLauncher::Fire()
 {
 	AActor* MyOwner = GetOwner();
-	if (!MyOwner) return;
+	if (!MyOwner)
+	{
+		return;
+	}
 
 	if (FireSound)
 	{

@@ -71,7 +71,10 @@ void ASWeapon::Fire()
 		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
 		float EffectiveDamage = BaseDamage;
-		if (SurfaceType == SURFACE_FLESHVULNERABLE) EffectiveDamage *= 4.0f;
+		if (SurfaceType == SURFACE_FLESHVULNERABLE)
+		{
+			EffectiveDamage *= 4.0f;
+		}
 		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit,
 		                                   MyOwner->GetInstigatorController(),
 		                                   this, DamageType);
@@ -95,7 +98,10 @@ void ASWeapon::Fire()
 			                                         Hit.ImpactNormal.Rotation());
 		}
 	}
-	if (DebugWeaponDrawing > 0) DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
+	if (DebugWeaponDrawing > 0)
+	{
+		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
+	}
 	PlayFireEffects(TracerEndpoint);
 	LastFireTime = GetWorld()->TimeSeconds;
 }

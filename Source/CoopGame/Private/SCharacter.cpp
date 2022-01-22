@@ -111,12 +111,18 @@ void ASCharacter::EndZoom()
 
 void ASCharacter::StartFire()
 {
-	if (CurrentWeapon) CurrentWeapon->StartFire();
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StartFire();
+	}
 }
 
 void ASCharacter::StopFire()
 {
-	if (CurrentWeapon) CurrentWeapon->StopFire();
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFire();
+	}
 }
 
 void ASCharacter::OnHealthChanged(class USHealthComponent* OwningHealthComp, float
@@ -138,7 +144,7 @@ void ASCharacter::OnHealthChanged(class USHealthComponent* OwningHealthComp, flo
 void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	float const TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
-	float const NewFOV = FMath::FInterpTo(CameraComponent->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
+	const float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
+	const float NewFOV = FMath::FInterpTo(CameraComponent->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 	CameraComponent->SetFieldOfView(NewFOV);
 }

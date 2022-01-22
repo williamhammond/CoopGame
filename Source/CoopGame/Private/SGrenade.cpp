@@ -41,12 +41,18 @@ void ASGrenade::BeginPlay()
 void ASGrenade::Explode() const
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorTransform());
-	TArray<AActor*> const IgnoreActors = {};
+	const TArray<AActor*> IgnoreActors = {};
 
 	AActor* Owner = GetOwner();
-	if (!Owner) return;
+	if (!Owner)
+	{
+		return;
+	}
 	AController* Instigator = Owner->GetInstigatorController();
-	if (!Instigator) return;
+	if (!Instigator)
+	{
+		return;
+	}
 
 	UGameplayStatics::ApplyRadialDamage(this, 20.0f, GetActorLocation(), ExplosionRadius, DamageType, IgnoreActors,
 	                                    Owner, Instigator, true, ECC_Camera);

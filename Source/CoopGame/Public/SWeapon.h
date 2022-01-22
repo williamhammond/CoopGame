@@ -44,7 +44,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* DefaultImpactEffect;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	UParticleSystem* FleshImpactEvent;
 
@@ -53,7 +53,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	USoundBase* FireSound;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
 	TSubclassOf<UCameraShake> FireCameraShake;
 
@@ -68,7 +68,7 @@ protected:
 	FTimerHandle TimerHandle_TimeBetween_Shots;
 
 	float LastFireTime;
-	
+
 public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	virtual void Fire();
