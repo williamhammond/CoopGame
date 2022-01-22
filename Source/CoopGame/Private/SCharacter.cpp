@@ -149,6 +149,7 @@ void ASCharacter::OnHealthChanged(class USHealthComponent* OwningHealthComp, flo
 void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	DOREPLIFETIME(ASCharacter, CurrentWeapon);
+	DOREPLIFETIME(ASCharacter, bDied);
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
