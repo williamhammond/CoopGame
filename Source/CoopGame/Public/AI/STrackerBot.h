@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	bool bUseVelocityChange;
 
+	UPROPERTY(VisibleDefaultsOnly, Category="TrackerBot")
+	UMaterialInstanceDynamic* MaterialInstance;
+
 
 public:
 	virtual void Tick(float DeltaTime) override;
