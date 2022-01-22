@@ -5,6 +5,8 @@
 #include "STrackerBot.generated.h"
 
 class USHealthComponent;
+class USphereComponent;
+
 UCLASS()
 class COOPGAME_API ASTrackerBot : public APawn
 {
@@ -20,6 +22,10 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	USHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleDefaultsOnly, Category="Components")
+	USphereComponent* OverlapComponent;
+	
 
 	UFUNCTION()
 	void OnHealthChanged(class USHealthComponent* OwningHealthComp, float
@@ -43,6 +49,11 @@ protected:
 	UParticleSystem* ExplosionEffect;
 	void SelfDestruct();
 
+	FTimerHandle TimerHandle_SelfDamage;
+	bool bStartedSelfDestruction;
+
+	void DamageSelf();
+
 	bool bExploded;
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	float ExplosionRadius;
@@ -52,4 +63,5 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

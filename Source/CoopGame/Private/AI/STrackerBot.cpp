@@ -1,13 +1,16 @@
 #include "AI/STrackerBot.h"
 
 #include "DrawDebugHelpers.h"
+#include "SCharacter.h"
 #include "SHealthComponent.h"
+#include "TimerManager.h"
 #include "AI/Navigation/NavigationPath.h"
 #include "AI/Navigation/NavigationSystem.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Components/SphereComponent.h"
 
 
 ASTrackerBot::ASTrackerBot()
@@ -21,6 +24,13 @@ ASTrackerBot::ASTrackerBot()
 
 	HealthComponent = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComponent"));
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ASTrackerBot::OnHealthChanged);
+
+	OverlapComponent = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapComponent"));
+	OverlapComponent->SetSphereRadius(200);
+	OverlapComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	OverlapComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	OverlapComponent->SetupAttachment(RootComponent);
 
 	bUseVelocityChange = true;
 	MovementForce = 1000;
@@ -86,6 +96,11 @@ void ASTrackerBot::SelfDestruct()
 	Destroy();
 }
 
+void ASTrackerBot::DamageSelf()
+{
+	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
+}
+
 void ASTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -107,4 +122,19 @@ void ASTrackerBot::Tick(float DeltaTime)
 		                          FColor::Yellow, false, 0.0f, 0, 1.0f);
 	}
 	DrawDebugSphere(GetWorld(), NextPathPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
+}
+
+void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (bStartedSelfDestruction)
+	{
+		return;
+	}
+	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
+	if (PlayerPawn)
+	{
+		GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, 0.5f, true, 0.0f);
+		bStartedSelfDestruction = true;
+	}
+	Super::NotifyActorBeginOverlap(OtherActor);
 }
