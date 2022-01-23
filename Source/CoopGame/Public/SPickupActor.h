@@ -37,6 +37,7 @@ protected:
 	ASPowerup* PowerUpInstance;
 
 	void Respawn();
+	
 public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

@@ -28,6 +28,12 @@ protected:
 
 	int32 TickCount;
 
+	UFUNCTION()
+	void OnRep_PowerupActivated();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPowerupStateChanged(bool bIsNewActive);
+
 public:
 	void ActivatePowerup();
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
@@ -38,4 +44,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
 	void OnExpired();
+	
+	UPROPERTY(ReplicatedUsing=OnRep_PowerupActivated)
+	bool bIsPowerupActive;
+
 };
