@@ -35,9 +35,9 @@ protected:
 	void OnPowerupStateChanged(bool bIsNewActive);
 
 public:
-	void ActivatePowerup();
+	void ActivatePowerup(AActor* OtherActor);
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
-	void OnActivated();
+	void OnActivated(AActor* OtherActor);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
 	void OnPowerupTicked();
