@@ -14,22 +14,22 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Powerups")
 	float PowerupInterval;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Powerups")
 	int32 TotalNumberOfTicks;
 
 	FTimerHandle TimerHandle_PowerupTick;
-	
+
 	UFUNCTION()
 	void OnTickPowerup();
 
 	int32 TickCount;
 
-	void ActivatePowerup();
 public:
+	void ActivatePowerup();
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
 	void OnActivated();
 
