@@ -29,7 +29,9 @@ protected:
 	                      class AController* InstigatedBy, AActor* DamageCauser);
 	UFUNCTION()
 	void OnRep_Health(float OldHealth);
+
 public:
+	float GetHealth() const;
 	UPROPERTY(BlueprintAssignable, Category="Events")
 	FOnHealthChangedSignature OnHealthChanged;
 

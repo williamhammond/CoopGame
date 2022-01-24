@@ -44,6 +44,11 @@ void USHealthComponent::OnRep_Health(float OldHealth)
 	OnHealthChanged.Broadcast(this, Health, Damage, nullptr, nullptr, nullptr);
 }
 
+float USHealthComponent::GetHealth() const
+{
+	return Health;
+}
+
 void USHealthComponent::Heal(float Amount)
 {
 	if (Amount <= 0 || Health <= 0)
