@@ -10,4 +10,33 @@ UCLASS()
 class COOPGAME_API ASGameMode : public AGameModeBase 
 {
 	GENERATED_BODY()
+protected:
+	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
+	void SpawnNewBot();
+
+	void StartWave();
+
+	void EndWave();
+
+	void PrepareForNextWave();
+
+	void SpawnBotTimerElapsed();
+
+	
+	FTimerHandle TimerHandle_BotSpawn;
+
+	UPROPERTY(EditDefaultsOnly, Category="GameMode")
+	float TimeBetweenWaves;
+
+	UPROPERTY(EditDefaultsOnly, Category="GameMode")
+	float SpawnRate;
+
+	UPROPERTY(EditDefaultsOnly, Category="GameMode")
+	int32 BotsPerWave;
+	
+	UPROPERTY(EditDefaultsOnly, Category="GameMode")
+	int32 WaveCount;
+public:
+	ASGameMode();
+	virtual void StartPlay() override;
 };
