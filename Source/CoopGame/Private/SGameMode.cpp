@@ -2,6 +2,7 @@
 
 #include "SHealthComponent.h"
 #include "TimerManager.h"
+#include "AI/STrackerBot.h"
 #include "Engine/World.h"
 
 
@@ -10,8 +11,6 @@ ASGameMode::ASGameMode()
 	TimeBetweenWaves = 2.0f;
 	SpawnRate = 1.0f;
 	WaveCount = 0.0f;
-	bIsAnyBotAlive = false;
-
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickInterval = 1.0f;
 }
@@ -37,7 +36,6 @@ void ASGameMode::PrepareForNextWave()
 void ASGameMode::SpawnBotTimerElapsed()
 {
 	SpawnNewBot();
-	bIsAnyBotAlive = true;
 	BotsPerWave--;
 	if (BotsPerWave <= 0)
 	{
@@ -53,16 +51,17 @@ void ASGameMode::CheckWaveState()
 		return;
 	}
 
+	bIsAnyBotAlive = false;
 	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
 	{
-		APawn* Current = It->Get();
-		if (Current && !Current->IsPlayerControlled())
+		APawn* Current = Cast<ASTrackerBot>(It->Get());
+		if (Current)
 		{
 			USHealthComponent* HealthComponent = Cast<USHealthComponent>(
 				Current->GetComponentByClass(USHealthComponent::StaticClass()));
 			if (HealthComponent && HealthComponent->GetHealth() > 0.0f)
 			{
-				bIsAnyBotAlive = false;
+				bIsAnyBotAlive = true;
 				break;
 			}
 		}
