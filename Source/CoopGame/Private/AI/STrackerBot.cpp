@@ -66,8 +66,6 @@ void ASTrackerBot::OnHealthChanged(USHealthComponent* OwningHealthComp, float He
 	{
 		SelfDestruct();
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("Health %s of %s"), *FString::SanitizeFloat(Health), *GetName());
 }
 
 FVector ASTrackerBot::GetNextPathPoint()
