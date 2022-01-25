@@ -2,6 +2,7 @@
 
 #include "SGameState.h"
 #include "SHealthComponent.h"
+#include "SPlayerState.h"
 #include "TimerManager.h"
 #include "AI/STrackerBot.h"
 #include "Engine/World.h"
@@ -12,6 +13,7 @@ ASGameMode::ASGameMode()
 	TimeBetweenWaves = 2.0f;
 
 	GameStateClass = ASGameState::StaticClass();
+	PlayerStateClass = ASPlayerState::StaticClass();
 	
 	SpawnRate = 1.0f;
 	WaveCount = 0.0f;

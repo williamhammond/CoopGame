@@ -9,8 +9,10 @@
 
 enum class EWaveState : uint8;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
+
 UCLASS()
-class COOPGAME_API ASGameMode : public AGameModeBase 
+class COOPGAME_API ASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 protected:
@@ -25,7 +27,7 @@ protected:
 	void CheckAnyPlayerAlive();
 	void GameOver();
 	void SetWaveState(EWaveState NewState);
-	
+
 	FTimerHandle TimerHandle_BotSpawn;
 	FTimerHandle TimerHandle_NextWaveStart;
 
@@ -37,13 +39,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="GameMode")
 	int32 BotsPerWave;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="GameMode")
 	int32 WaveCount;
-	
+
 	bool bIsAnyBotAlive;
 public:
 	ASGameMode();
 	virtual void StartPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	
+	UPROPERTY(BlueprintAssignable, Category="GameMode")
+	FOnActorKilled OnActorKilled;
 };

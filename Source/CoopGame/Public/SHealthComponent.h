@@ -30,6 +30,8 @@ protected:
 	UFUNCTION()
 	void OnRep_Health(float OldHealth);
 
+	bool bIsDead;
+
 public:
 	float GetHealth() const;
 	UPROPERTY(BlueprintAssignable, Category="Events")
