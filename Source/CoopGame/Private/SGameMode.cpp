@@ -42,6 +42,7 @@ void ASGameMode::EndWave()
 void ASGameMode::PrepareForNextWave()
 {
 	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASGameMode::StartWave, TimeBetweenWaves, false);
+	RespawnDeadPlayers();
 	SetWaveState(EWaveState::WaitingToStart);
 }
 
@@ -117,6 +118,19 @@ void ASGameMode::SetWaveState(EWaveState NewState)
 	if (ensureAlways(GameState))
 	{
 		GameState->SetWaveState(NewState);	
+	}
+}
+
+void ASGameMode::RespawnDeadPlayers()
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PlayerController = It->Get();
+		APawn* MyPawn = PlayerController->GetPawnOrSpectator();
+		if (PlayerController && !MyPawn)
+		{
+			RestartPlayer(PlayerController);
+		}
 	}
 }
 
