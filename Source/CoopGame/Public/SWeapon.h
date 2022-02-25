@@ -94,6 +94,9 @@ protected:
 	UFUNCTION()
 	void OnRep_HitScanTrace();
 
+	UPROPERTY(EditDefaultsOnly, Category="Weapon", meta=(ClampMin=0.0f))
+	float BulletSpreadDegrees;
+
 public:
 
 	void StartFire();

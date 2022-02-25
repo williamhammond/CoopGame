@@ -30,10 +30,13 @@ ASWeapon::ASWeapon()
 	BaseDamage = 20.0f;
 
 	RateOfFire = 600.0f;
-	SetReplicates(true);
-
+	BulletSpreadDegrees = 2.0f;
+	
 	NetUpdateFrequency = 66.0f;
 	MinNetUpdateFrequency = 33.0f;
+	
+	SetReplicates(true);
+
 }
 
 void ASWeapon::BeginPlay()
@@ -61,6 +64,9 @@ void ASWeapon::Fire()
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 	FVector ShotDirection = EyeRotation.Vector();
+
+	float HalfRad = FMath::DegreesToRadians(BulletSpreadDegrees);
+	ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
 
 	FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
 
@@ -93,7 +99,6 @@ void ASWeapon::Fire()
 		                                   this, DamageType);
 		PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 		HitScanTrace.SurfaceType = SurfaceType;
-		
 	}
 
 	if (DebugWeaponDrawing > 0)
@@ -167,26 +172,26 @@ void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 
 void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint)
 {
-		UParticleSystem* SelectedEffect = nullptr;
-		switch (SurfaceType)
-		{
-		case SURFACE_FLESHDEFAULT:
-		case SURFACE_FLESHVULNERABLE:
-			SelectedEffect = FleshImpactEvent;
-			break;
-		default:
-			SelectedEffect = DefaultImpactEffect;
-			break;
-		}
+	UParticleSystem* SelectedEffect = nullptr;
+	switch (SurfaceType)
+	{
+	case SURFACE_FLESHDEFAULT:
+	case SURFACE_FLESHVULNERABLE:
+		SelectedEffect = FleshImpactEvent;
+		break;
+	default:
+		SelectedEffect = DefaultImpactEffect;
+		break;
+	}
 
-		if (SelectedEffect)
-		{
-			FVector const MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
-			FVector ShotDirection = ImpactPoint - MuzzleLocation;
-			ShotDirection.Normalize();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, ImpactPoint,
-			                                         ShotDirection.Rotation());
-		}
+	if (SelectedEffect)
+	{
+		FVector const MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
+		FVector ShotDirection = ImpactPoint - MuzzleLocation;
+		ShotDirection.Normalize();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, ImpactPoint,
+		                                         ShotDirection.Rotation());
+	}
 }
 
 void ASWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
