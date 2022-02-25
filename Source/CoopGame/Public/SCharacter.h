@@ -57,9 +57,6 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Player")
 	USHealthComponent* HealthComponent;
 
-	void StartFire();
-	void StopFire();
-
 	UFUNCTION()
 	void OnHealthChanged(class USHealthComponent* HealthComp, float
 	                     Health, float HealthDelta, const class UDamageType* DamageType,
@@ -69,6 +66,12 @@ protected:
 	bool bDied;
 
 public:
+	UFUNCTION(BlueprintCallable, Category="Player")
+	void StartFire();
+	
+	UFUNCTION(BlueprintCallable, Category="Player")
+	void StopFire();
+	
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
