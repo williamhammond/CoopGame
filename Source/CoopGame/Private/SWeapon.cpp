@@ -96,7 +96,7 @@ void ASWeapon::Fire()
 
 		UGameplayStatics::ApplyPointDamage(HitActor, EffectiveDamage, ShotDirection, Hit,
 		                                   MyOwner->GetInstigatorController(),
-		                                   this, DamageType);
+		                                   MyOwner, DamageType);
 		PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 		HitScanTrace.SurfaceType = SurfaceType;
 	}

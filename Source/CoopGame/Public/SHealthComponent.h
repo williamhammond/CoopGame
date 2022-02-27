@@ -15,6 +15,9 @@ class COOPGAME_API USHealthComponent : public UActorComponent
 public:
 	USHealthComponent();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="HealthComponent")
+	uint8 TeamNum;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,4 +42,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="HealthComponent")
 	void Heal(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category="HealthComponent")
+	static bool IsFriendly(AActor* A, AActor* B);
 };
