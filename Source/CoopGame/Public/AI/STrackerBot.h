@@ -18,6 +18,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	UStaticMeshComponent* MeshComponent;
 
@@ -69,6 +70,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	USoundCue* ExplodeSound;
+
+	FTimerHandle TimerHandle_RefreshPath;
+	void RefreshPath();
 
 public:
 	virtual void Tick(float DeltaTime) override;

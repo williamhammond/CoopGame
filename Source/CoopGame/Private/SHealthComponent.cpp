@@ -80,11 +80,6 @@ bool USHealthComponent::IsFriendly(AActor* A, AActor* B)
 	{
 		return true;
 	}
-
-	if (A == B)
-	{
-		return false;
-	}
 	
 	USHealthComponent* HealthComponentA = Cast<USHealthComponent>(
 		A->GetComponentByClass(USHealthComponent::StaticClass()));
