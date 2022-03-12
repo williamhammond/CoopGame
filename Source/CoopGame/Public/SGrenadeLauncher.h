@@ -18,7 +18,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category="Weapon")
 	virtual void Fire() override;
 
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")

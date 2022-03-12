@@ -5,13 +5,14 @@
 #include "SCharacter.h"
 #include "SHealthComponent.h"
 #include "TimerManager.h"
-#include "AI/Navigation/NavigationPath.h"
-#include "AI/Navigation/NavigationSystem.h"
+#include "Runtime/NavigationSystem/Public/NavigationSystem.h"
+#include "Runtime/NavigationSystem/Public/NavigationPath.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/SphereComponent.h"
+#include "Engine/World.h"
 
 static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVarDebugTrackerBotDrawing(TEXT("COOP.DebugTrackerBot"),
@@ -86,7 +87,7 @@ FVector ASTrackerBot::GetNextPathPoint()
 		{
 			continue;
 		}
-		
+
 		USHealthComponent* CurrentHealthComponent = Cast<USHealthComponent>(
 			Current->GetComponentByClass(USHealthComponent::StaticClass()));
 		if (CurrentHealthComponent && CurrentHealthComponent->GetHealth() > 0.0f)
@@ -103,7 +104,8 @@ FVector ASTrackerBot::GetNextPathPoint()
 	if (BestTarget)
 	{
 		UNavigationPath* NavPath =
-			UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), BestTarget);
+			UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), BestTarget);
+
 
 		GetWorldTimerManager().ClearTimer(TimerHandle_RefreshPath);
 		GetWorldTimerManager().SetTimer(TimerHandle_RefreshPath, this, &ASTrackerBot::RefreshPath, 5.0f, false);
