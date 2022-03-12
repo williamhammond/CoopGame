@@ -31,12 +31,11 @@ ASWeapon::ASWeapon()
 
 	RateOfFire = 600.0f;
 	BulletSpreadDegrees = 2.0f;
-	
+
 	NetUpdateFrequency = 66.0f;
 	MinNetUpdateFrequency = 33.0f;
-	
-	SetReplicates(true);
 
+	SetReplicates(true);
 }
 
 void ASWeapon::BeginPlay()
@@ -58,7 +57,6 @@ void ASWeapon::Fire()
 	{
 		return;
 	}
-
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
@@ -79,6 +77,10 @@ void ASWeapon::Fire()
 	FVector TracerEndpoint = TraceEnd;
 
 	EPhysicalSurface SurfaceType = SurfaceType_Default;
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
 
 	FHitResult Hit;
 	bool isHit = GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams);
@@ -142,6 +144,10 @@ void ASWeapon::StopFire()
 
 void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 {
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
 	if (MuzzleEffect)
 	{
 		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComponent, MuzzleSocketName);
