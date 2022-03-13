@@ -1,9 +1,9 @@
 ﻿#include "SHealthComponent.h"
 
-#include "SGameMode.h"
 #include "UnrealNetwork.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "State/SGameMode.h"
 
 
 USHealthComponent::USHealthComponent()

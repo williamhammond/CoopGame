@@ -1,4 +1,4 @@
-﻿#include "SPickupActor.h"
+﻿#include "Powerups/SPickupActor.h"
 
 #include "TimerManager.h"
 #include "Components/DecalComponent.h"
@@ -53,4 +53,3 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 		GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
 	}
 }
-
