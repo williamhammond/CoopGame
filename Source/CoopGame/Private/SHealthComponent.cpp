@@ -35,7 +35,7 @@ void USHealthComponent::BeginPlay()
 void USHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
                                          AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (Damage <= 0.0f || bIsDead || IsFriendly(DamagedActor, DamageCauser))
+	if ((Damage <= 0.0f || bIsDead || IsFriendly(DamagedActor, DamageCauser)) && DamagedActor != DamageCauser)
 	{
 		return;
 	}
@@ -80,10 +80,10 @@ bool USHealthComponent::IsFriendly(AActor* A, AActor* B)
 	{
 		return true;
 	}
-	
+
 	USHealthComponent* HealthComponentA = Cast<USHealthComponent>(
 		A->GetComponentByClass(USHealthComponent::StaticClass()));
-	
+
 	USHealthComponent* HealthComponentB = Cast<USHealthComponent>(
 		B->GetComponentByClass(USHealthComponent::StaticClass()));
 
@@ -93,7 +93,6 @@ bool USHealthComponent::IsFriendly(AActor* A, AActor* B)
 	}
 
 	return HealthComponentA->TeamNum == HealthComponentB->TeamNum;
-	
 }
 
 void USHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

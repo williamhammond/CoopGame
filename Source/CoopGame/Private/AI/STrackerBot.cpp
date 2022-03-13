@@ -148,6 +148,10 @@ void ASTrackerBot::SelfDestruct()
 void ASTrackerBot::DamageSelf()
 {
 	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
+	if(DebugTrackerBotDrawing)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tracker bot health is %f"), HealthComponent->GetHealth());
+	}
 }
 
 void ASTrackerBot::RefreshPath()
@@ -192,6 +196,7 @@ void ASTrackerBot::Tick(float DeltaTime)
 
 void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 {
+	Super::NotifyActorBeginOverlap(OtherActor);
 	if (bStartedSelfDestruction || bExploded)
 	{
 		return;
@@ -207,5 +212,4 @@ void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 		bStartedSelfDestruction = true;
 		UGameplayStatics::SpawnSoundAttached(SelfDestructSound, RootComponent);
 	}
-	Super::NotifyActorBeginOverlap(OtherActor);
 }
