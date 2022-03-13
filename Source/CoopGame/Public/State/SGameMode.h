@@ -49,7 +49,7 @@ public:
 	ASGameMode();
 	virtual void StartPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-	
+
 	UPROPERTY(BlueprintAssignable, Category="GameMode")
 	FOnActorKilled OnActorKilled;
 };

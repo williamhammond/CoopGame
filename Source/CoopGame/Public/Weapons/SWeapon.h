@@ -14,12 +14,12 @@ class USoundBase;
 class UAnimSequence;
 
 USTRUCT()
-struct FHitScanTrace 
+struct FHitScanTrace
 {
 	GENERATED_BODY()
 	UPROPERTY()
 	TEnumAsByte<EPhysicalSurface> SurfaceType;
-	
+
 	UPROPERTY()
 	FVector_NetQuantize TraceTo;
 };
@@ -81,7 +81,7 @@ protected:
 	FTimerHandle TimerHandle_TimeBetween_Shots;
 
 	float LastFireTime;
-	
+
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	virtual void Fire();
 
@@ -98,7 +98,6 @@ protected:
 	float BulletSpreadDegrees;
 
 public:
-
 	void StartFire();
 
 	void StopFire();

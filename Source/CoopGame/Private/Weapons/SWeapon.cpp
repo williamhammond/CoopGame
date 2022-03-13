@@ -189,7 +189,7 @@ void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoi
 
 	if (SelectedEffect)
 	{
-		FVector const MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
+		const FVector MuzzleLocation = MeshComponent->GetSocketLocation(MuzzleSocketName);
 		FVector ShotDirection = ImpactPoint - MuzzleLocation;
 		ShotDirection.Normalize();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, ImpactPoint,

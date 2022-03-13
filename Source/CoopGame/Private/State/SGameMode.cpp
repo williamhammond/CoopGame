@@ -14,10 +14,10 @@ ASGameMode::ASGameMode()
 
 	GameStateClass = ASGameState::StaticClass();
 	PlayerStateClass = ASPlayerState::StaticClass();
-	
+
 	SpawnRate = 1.0f;
 	WaveCount = 0.0f;
-	
+
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickInterval = 1.0f;
 }
@@ -58,7 +58,7 @@ void ASGameMode::SpawnBotTimerElapsed()
 
 void ASGameMode::CheckWaveState()
 {
-	bool const bIsPreparingForWave = GetWorldTimerManager().IsTimerActive(TimerHandle_NextWaveStart);
+	const bool bIsPreparingForWave = GetWorldTimerManager().IsTimerActive(TimerHandle_NextWaveStart);
 	if (bIsPreparingForWave || BotsPerWave > 0)
 	{
 		return;
@@ -117,7 +117,7 @@ void ASGameMode::SetWaveState(EWaveState NewState)
 	ASGameState* GameState = GetGameState<ASGameState>();
 	if (ensureAlways(GameState))
 	{
-		GameState->SetWaveState(NewState);	
+		GameState->SetWaveState(NewState);
 	}
 }
 

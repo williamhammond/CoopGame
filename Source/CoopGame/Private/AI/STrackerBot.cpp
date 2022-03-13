@@ -148,7 +148,7 @@ void ASTrackerBot::SelfDestruct()
 void ASTrackerBot::DamageSelf()
 {
 	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
-	if(DebugTrackerBotDrawing)
+	if (DebugTrackerBotDrawing)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Tracker bot health is %f"), HealthComponent->GetHealth());
 	}
@@ -165,7 +165,7 @@ void ASTrackerBot::Tick(float DeltaTime)
 
 	if (Role == ROLE_Authority && !bExploded)
 	{
-		float const DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
+		const float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
 		if (DistanceToTarget <= RequiredDistanceToTarget)
 		{
 			NextPathPoint = GetNextPathPoint();

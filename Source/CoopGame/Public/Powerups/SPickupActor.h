@@ -18,10 +18,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(VisibleAnywhere, Category="Componenets")
 	USphereComponent* SphereComponent;
-	
+
 	UPROPERTY(VisibleAnywhere, Category="Componenets")
 	UDecalComponent* DecalComponent;
 
@@ -37,7 +37,7 @@ protected:
 	ASPowerup* PowerUpInstance;
 
 	void Respawn();
-	
+
 public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

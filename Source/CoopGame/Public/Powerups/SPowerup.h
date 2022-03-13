@@ -44,8 +44,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Powerups")
 	void OnExpired();
-	
+
 	UPROPERTY(ReplicatedUsing=OnRep_PowerupActivated)
 	bool bIsPowerupActive;
-
 };

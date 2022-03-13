@@ -11,7 +11,7 @@ void ASGameState::SetWaveState(EWaveState NewState)
 {
 	if (Role == ROLE_Authority)
 	{
-		EWaveState const OldState = WaveState;
+		const EWaveState OldState = WaveState;
 		WaveState = NewState;
 		OnRep_WaveState(OldState);
 	}

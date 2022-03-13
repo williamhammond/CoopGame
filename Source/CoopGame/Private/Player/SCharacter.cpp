@@ -71,7 +71,7 @@ void ASCharacter::BeginPlay()
 	Super::BeginPlay();
 	DefaultFOV = CameraComponent->FieldOfView;
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
-	
+
 	if (Role == ROLE_Authority)
 	{
 		FActorSpawnParameters SpawnParameters;
