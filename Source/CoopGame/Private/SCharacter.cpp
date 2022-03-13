@@ -146,6 +146,7 @@ void ASCharacter::OnHealthChanged(class USHealthComponent* OwningHealthComp, flo
 
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.0f);
+		StopFire();
 	}
 }
 
