@@ -77,11 +77,6 @@ void ASWeapon::Fire()
 	FVector TracerEndpoint = TraceEnd;
 
 	EPhysicalSurface SurfaceType = SurfaceType_Default;
-	if (FireSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
 	FHitResult Hit;
 	bool isHit = GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams);
 	if (isHit)
@@ -111,6 +106,7 @@ void ASWeapon::Fire()
 	{
 		HitScanTrace.TraceTo = TracerEndpoint;
 	}
+	PlayFireEffects(TracerEndpoint);
 	LastFireTime = GetWorld()->TimeSeconds;
 }
 
