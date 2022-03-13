@@ -1,4 +1,4 @@
-﻿#include "SPlayerState.h"
+﻿#include "Player/SPlayerState.h"
 
 void ASPlayerState::AddScore(float ScoreDelta)
 {
