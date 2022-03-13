@@ -1,4 +1,4 @@
-﻿#include "SGrenade.h"
+﻿#include "Weapons/SGrenade.h"
 
 #include "DrawDebugHelpers.h"
 #include "Components/SphereComponent.h"

@@ -1,9 +1,8 @@
-#include "SGrenadeLauncher.h"
+#include "Weapons/SGrenadeLauncher.h"
 
-#include "SGrenade.h"
 #include "Animation/AnimInstance.h"
-#include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Weapons/SGrenade.h"
 
 
 ASGrenadeLauncher::ASGrenadeLauncher()

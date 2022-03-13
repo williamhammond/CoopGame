@@ -1,11 +1,11 @@
 ﻿#include "SGameMode.h"
+#include "State/SGameMode.h"
 
-#include "SGameState.h"
 #include "SHealthComponent.h"
-#include "SPlayerState.h"
 #include "TimerManager.h"
 #include "AI/STrackerBot.h"
 #include "Engine/World.h"
+#include "Player/SPlayerState.h"
 
 
 ASGameMode::ASGameMode()

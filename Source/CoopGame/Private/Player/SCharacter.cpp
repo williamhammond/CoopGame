@@ -1,4 +1,4 @@
-#include "SCharacter.h"
+#include "Player/SCharacter.h"
 
 #include "CoopGame.h"
 #include "UnrealNetwork.h"

@@ -1,10 +1,10 @@
 ﻿#include "SPickupActor.h"
 
-#include "SPowerup.h"
 #include "TimerManager.h"
 #include "Components/DecalComponent.h"
 #include "Components/SphereComponent.h"
 #include "Engine/World.h"
+#include "Powerups/SPowerup.h"
 
 
 ASPickupActor::ASPickupActor()
