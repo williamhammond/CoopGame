@@ -3,7 +3,7 @@
 #include "UnrealNetwork.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
-#include "State/SGameMode.h"
+#include "State/SWaveLevelMode.h"
 
 
 USHealthComponent::USHealthComponent()
@@ -44,7 +44,7 @@ void USHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, con
 	bIsDead = Health <= 0;
 	if (bIsDead)
 	{
-		ASGameMode* GameMode = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
+		ASWaveLevelMode* GameMode = Cast<ASWaveLevelMode>(GetWorld()->GetAuthGameMode());
 		if (GameMode)
 		{
 			GameMode->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy);

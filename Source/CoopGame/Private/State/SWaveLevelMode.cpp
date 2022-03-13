@@ -1,5 +1,4 @@
-﻿#include "SGameMode.h"
-#include "State/SGameMode.h"
+﻿#include "State/SWaveLevelMode.h"
 
 #include "SHealthComponent.h"
 #include "TimerManager.h"
@@ -8,11 +7,11 @@
 #include "Player/SPlayerState.h"
 
 
-ASGameMode::ASGameMode()
+ASWaveLevelMode::ASWaveLevelMode()
 {
 	TimeBetweenWaves = 2.0f;
 
-	GameStateClass = ASGameState::StaticClass();
+	GameStateClass = ASWaveLevelState::StaticClass();
 	PlayerStateClass = ASPlayerState::StaticClass();
 
 	SpawnRate = 1.0f;
@@ -22,31 +21,31 @@ ASGameMode::ASGameMode()
 	PrimaryActorTick.TickInterval = 1.0f;
 }
 
-void ASGameMode::StartWave()
+void ASWaveLevelMode::StartWave()
 {
 	WaveCount++;
 	BotsPerWave = 2 * WaveCount;
-	GetWorldTimerManager().SetTimer(TimerHandle_BotSpawn, this, &ASGameMode::SpawnBotTimerElapsed, SpawnRate, true,
+	GetWorldTimerManager().SetTimer(TimerHandle_BotSpawn, this, &ASWaveLevelMode::SpawnBotTimerElapsed, SpawnRate, true,
 	                                0.0f);
 
 	SetWaveState(EWaveState::WaveInProgress);
 }
 
-void ASGameMode::EndWave()
+void ASWaveLevelMode::EndWave()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_BotSpawn);
 
 	SetWaveState(EWaveState::WaitingToComplete);
 }
 
-void ASGameMode::PrepareForNextWave()
+void ASWaveLevelMode::PrepareForNextWave()
 {
-	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASGameMode::StartWave, TimeBetweenWaves, false);
+	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASWaveLevelMode::StartWave, TimeBetweenWaves, false);
 	RespawnDeadPlayers();
 	SetWaveState(EWaveState::WaitingToStart);
 }
 
-void ASGameMode::SpawnBotTimerElapsed()
+void ASWaveLevelMode::SpawnBotTimerElapsed()
 {
 	SpawnNewBot();
 	BotsPerWave--;
@@ -56,7 +55,7 @@ void ASGameMode::SpawnBotTimerElapsed()
 	}
 }
 
-void ASGameMode::CheckWaveState()
+void ASWaveLevelMode::CheckWaveState()
 {
 	const bool bIsPreparingForWave = GetWorldTimerManager().IsTimerActive(TimerHandle_NextWaveStart);
 	if (bIsPreparingForWave || BotsPerWave > 0)
@@ -86,7 +85,7 @@ void ASGameMode::CheckWaveState()
 	}
 }
 
-void ASGameMode::CheckAnyPlayerAlive()
+void ASWaveLevelMode::CheckAnyPlayerAlive()
 {
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
@@ -105,23 +104,23 @@ void ASGameMode::CheckAnyPlayerAlive()
 	GameOver();
 }
 
-void ASGameMode::GameOver()
+void ASWaveLevelMode::GameOver()
 {
 	EndWave();
 	SetWaveState(EWaveState::GameOver);
 	UE_LOG(LogTemp, Log, TEXT("Game over players died"));
 }
 
-void ASGameMode::SetWaveState(EWaveState NewState)
+void ASWaveLevelMode::SetWaveState(EWaveState NewState)
 {
-	ASGameState* GameState = GetGameState<ASGameState>();
+	ASWaveLevelState* GameState = GetGameState<ASWaveLevelState>();
 	if (ensureAlways(GameState))
 	{
 		GameState->SetWaveState(NewState);
 	}
 }
 
-void ASGameMode::RespawnDeadPlayers()
+void ASWaveLevelMode::RespawnDeadPlayers()
 {
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
@@ -134,14 +133,14 @@ void ASGameMode::RespawnDeadPlayers()
 	}
 }
 
-void ASGameMode::StartPlay()
+void ASWaveLevelMode::StartPlay()
 {
 	Super::StartPlay();
 
 	PrepareForNextWave();
 }
 
-void ASGameMode::Tick(float DeltaSeconds)
+void ASWaveLevelMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 

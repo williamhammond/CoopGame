@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "SGameState.generated.h"
+#include "SWaveLevelState.generated.h"
 
 UENUM(BlueprintType)
 enum class EWaveState : uint8
@@ -15,7 +15,7 @@ enum class EWaveState : uint8
 };
 
 UCLASS()
-class COOPGAME_API ASGameState : public AGameStateBase
+class COOPGAME_API ASWaveLevelState : public AGameStateBase
 {
 	GENERATED_BODY()
 

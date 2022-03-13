@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SGameState.h"
+#include "SWaveLevelState.h"
 #include "GameFramework/GameModeBase.h"
-#include "SGameMode.generated.h"
+#include "SWaveLevelMode.generated.h"
 
 enum class EWaveState : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
 
 UCLASS()
-class COOPGAME_API ASGameMode : public AGameModeBase
+class COOPGAME_API ASWaveLevelMode : public AGameModeBase
 {
 	GENERATED_BODY()
 protected:
@@ -46,7 +46,7 @@ protected:
 
 	bool bIsAnyBotAlive;
 public:
-	ASGameMode();
+	ASWaveLevelMode();
 	virtual void StartPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
