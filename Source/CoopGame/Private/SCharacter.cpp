@@ -4,6 +4,9 @@
 #include "UnrealNetwork.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/InputComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/World.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
