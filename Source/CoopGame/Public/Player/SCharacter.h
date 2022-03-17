@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "SHealthComponent.h"
-#include "SWeapon.h"
+#include "Weapons/SWeapon.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
