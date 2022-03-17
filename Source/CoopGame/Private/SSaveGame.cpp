@@ -2,5 +2,6 @@
 
 USSaveGame::USSaveGame()
 {
+	PlayerName = "PlayerName";
 }
 
