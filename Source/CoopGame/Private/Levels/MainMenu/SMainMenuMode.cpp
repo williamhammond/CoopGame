@@ -1,5 +1,1 @@
-﻿
-#include "Levels/MainMenu/SMainMenuMode.h"
-
-ASMainMenuMode::ASMainMenuMode()
-{}
+﻿#include "Levels/MainMenu/SMainMenuMode.h"

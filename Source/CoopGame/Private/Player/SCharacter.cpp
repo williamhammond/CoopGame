@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapons/SWeapon.h"
 
 
 ASCharacter::ASCharacter()
