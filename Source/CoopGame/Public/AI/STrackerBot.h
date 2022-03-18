@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SSavableInterface.h"
 #include "GameFramework/Pawn.h"
 #include "Sound/SoundCue.h"
 #include "STrackerBot.generated.h"
@@ -9,7 +10,7 @@ class USHealthComponent;
 class USphereComponent;
 
 UCLASS()
-class COOPGAME_API ASTrackerBot : public APawn
+class COOPGAME_API ASTrackerBot : public APawn, public ISSavableInterface
 {
 	GENERATED_BODY()
 

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "SHealthComponent.h"
+#include "SSavableInterface.h"
 #include "Weapons/SWeapon.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
@@ -10,7 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class COOPGAME_API ASCharacter : public ACharacter
+class COOPGAME_API ASCharacter : public ACharacter, public ISSavableInterface
 {
 	GENERATED_BODY()
 

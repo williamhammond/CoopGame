@@ -6,6 +6,10 @@
 
 #include "SGameInstance.generated.h"
 
+class USSaveGame;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSaveGameSignature, class USSaveGame*, SaveObject);
+
 UCLASS()
 class COOPGAME_API USGameInstance : public UGameInstance
 {
@@ -14,14 +18,18 @@ public:
 	USGameInstance();
 
 	UPROPERTY(BlueprintReadOnly)
-	FString SaveGameSlotName;
+	FString SlotName;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Settings")
-	USSaveGame* SaveGameObject;
+	USSaveGame* CurrentSaveGame;
 
 	UFUNCTION(BlueprintCallable, Category = "Game Manager")
 	void LoadGame();
 
 	UFUNCTION(BlueprintCallable, Category = "Game Manager")
 	void SaveGame();
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnSaveGameSignature OnSaveGameLoaded;
+	
 };

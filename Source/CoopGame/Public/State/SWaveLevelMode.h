@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SSavableInterface.h"
 #include "SWaveLevelState.h"
 #include "GameFramework/GameModeBase.h"
 #include "SWaveLevelMode.generated.h"
@@ -12,7 +13,7 @@ enum class EWaveState : uint8;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
 
 UCLASS()
-class COOPGAME_API ASWaveLevelMode : public AGameModeBase
+class COOPGAME_API ASWaveLevelMode : public AGameModeBase, public ISSavableInterface
 {
 	GENERATED_BODY()
 protected:
