@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/SaveGame.h"
 
 #include "SSaveGame.generated.h"
@@ -16,7 +17,7 @@ public:
 
 	UPROPERTY()
 	FTransform Transform;
-
+	
 	UPROPERTY()
 	TArray<uint8> ByteData;
 };
@@ -41,7 +42,7 @@ public:
 
 	UPROPERTY()
 	FRotator Rotation;
-
+	
 	UPROPERTY()
 	bool bResumeAtTransform;
 };

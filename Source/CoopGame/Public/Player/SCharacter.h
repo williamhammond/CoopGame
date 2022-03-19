@@ -66,6 +66,8 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadOnly, Category="Player")
 	bool bDied;
 
+	virtual void OnActorLoaded_Implementation() override;
+
 public:
 	UFUNCTION(BlueprintCallable, Category="Player")
 	void StartFire();

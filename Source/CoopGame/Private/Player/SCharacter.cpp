@@ -9,12 +9,14 @@
 #include "Engine/World.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Weapons/SWeapon.h"
 
 
 ASCharacter::ASCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bTickEvenWhenPaused = true;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -164,4 +166,10 @@ void ASCharacter::Tick(float DeltaTime)
 	const float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
 	const float NewFOV = FMath::FInterpTo(CameraComponent->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 	CameraComponent->SetFieldOfView(NewFOV);
+}
+
+void ASCharacter::OnActorLoaded_Implementation()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	PlayerController->UpdateCameraManager(0);
 }

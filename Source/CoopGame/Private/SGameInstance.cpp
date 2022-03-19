@@ -43,7 +43,7 @@ void USGameInstance::LoadGame()
 				if (ActorData.ActorName == Actor->GetFName())
 				{
 					Actor->SetActorTransform(ActorData.Transform);
-
+					
 					FMemoryReader MemReader(ActorData.ByteData);
 
 					FObjectAndNameAsStringProxyArchive Ar(MemReader, true);
