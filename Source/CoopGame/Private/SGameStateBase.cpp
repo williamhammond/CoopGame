@@ -1,5 +1,6 @@
 #include "SGameStateBase.h"
 
+#include "SCharacter.h"
 #include "SPlayerController.h"
 #include "Engine/World.h"
 
@@ -16,6 +17,11 @@ void ASGameStateBase::MulticastOnMissionComplete_Implementation(APawn* Instigato
 			if (Pawn)
 			{
 				Pawn->DisableInput(nullptr);
+			}
+			ASCharacter* character = Cast<ASCharacter>(Pawn);
+			if (character)
+			{
+				character->StopFire();
 			}
 		}
 	}

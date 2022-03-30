@@ -5,6 +5,7 @@
 
 #include "CoopGame.h"
 #include "DrawDebugHelpers.h"
+#include "SPlayerController.h"
 #include "TimerManager.h"
 #include "UnrealNetwork.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -19,7 +20,6 @@ FAutoConsoleVariableRef CVarDebugWeaponDrawing(TEXT("COOP.DebugWeapons"),
                                                TEXT("Draw Debug Lines for Weapons"),
                                                ECVF_Cheat);
 
-// Sets default values
 ASWeapon::ASWeapon()
 {
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
@@ -136,6 +136,15 @@ void ASWeapon::StartFire()
 
 void ASWeapon::StopFire()
 {
+	APawn* MyOwner = Cast<APawn>(GetOwner());
+	if (MyOwner)
+	{
+		ASPlayerController* PlayerController = Cast<ASPlayerController>(MyOwner->GetController());
+		if (PlayerController)
+		{
+			PlayerController->ClientStopCameraShake(FireCameraShake);
+		}
+	}
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetween_Shots);
 }
 
@@ -165,7 +174,7 @@ void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 	APawn* MyOwner = Cast<APawn>(GetOwner());
 	if (MyOwner)
 	{
-		APlayerController* PlayerController = Cast<APlayerController>(MyOwner->GetController());
+		ASPlayerController* PlayerController = Cast<ASPlayerController>(MyOwner->GetController());
 		if (PlayerController)
 		{
 			PlayerController->ClientPlayCameraShake(FireCameraShake);
