@@ -6,7 +6,7 @@
 
 bool ASAnnihilationMode::IsMissionSuccess_Implementation()
 {
-	return !AnyVillianAlive();
+	return !AnyVillainAlive();
 }
 
 bool ASAnnihilationMode::IsMissionFailure_Implementation()
@@ -33,7 +33,7 @@ bool ASAnnihilationMode::AnyPlayerAlive()
 	return false;
 }
 
-bool ASAnnihilationMode::AnyVillianAlive()
+bool ASAnnihilationMode::AnyVillainAlive()
 {
 	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
 	{

@@ -14,7 +14,7 @@ protected:
 	bool IsMissionFailure_Implementation() override;
 
 	bool AnyPlayerAlive();
-	bool AnyVillianAlive();
+	bool AnyVillainAlive();
 public:
 	ASAnnihilationMode();
 };
