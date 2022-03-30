@@ -1,8 +1,13 @@
 ﻿#include "Annihilation/SAnnihilationMode.h"
 
+#include "SCharacterHUD.h"
 #include "Engine/World.h"
 #include "SHealthComponent.h"
 
+ASAnnihilationMode::ASAnnihilationMode ()
+{
+	HUDClass = ASCharacterHUD::StaticClass();	
+}
 
 bool ASAnnihilationMode::IsMissionSuccess_Implementation()
 {
