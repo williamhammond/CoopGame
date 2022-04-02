@@ -7,6 +7,7 @@
 ASAnnihilationMode::ASAnnihilationMode ()
 {
 	HUDClass = ASCharacterHUD::StaticClass();	
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 bool ASAnnihilationMode::IsMissionSuccess_Implementation()
@@ -56,9 +57,4 @@ bool ASAnnihilationMode::AnyVillainAlive()
 		}
 	}
 	return false;
-}
-
-ASAnnihilationMode::ASAnnihilationMode()
-{
-	PrimaryActorTick.bCanEverTick = true;
 }
