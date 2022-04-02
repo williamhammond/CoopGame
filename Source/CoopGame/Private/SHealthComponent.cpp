@@ -9,6 +9,7 @@
 USHealthComponent::USHealthComponent()
 {
 	DefaultHealth = 100;
+	Health = DefaultHealth;
 	bIsDead = false;
 
 	TeamNum = 255;
@@ -29,7 +30,6 @@ void USHealthComponent::BeginPlay()
 			MyOwner->OnTakeAnyDamage.AddDynamic(this, &USHealthComponent::HandleTakeDamage);
 		}
 	}
-	Health = DefaultHealth;
 }
 
 void USHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,

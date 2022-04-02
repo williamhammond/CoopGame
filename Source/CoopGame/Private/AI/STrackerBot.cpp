@@ -166,6 +166,9 @@ void ASTrackerBot::Tick(float DeltaTime)
 	if (Role == ROLE_Authority && !bExploded)
 	{
 		const float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
+		UE_LOG(LogTemp, Warning, TEXT("Tracker %s: (%f, %f, %f) - (%f, %f, %f) = %f"), *GetName(), GetActorLocation().X,
+		       GetActorLocation().Y, GetActorLocation().Z, NextPathPoint.X, NextPathPoint.Y, NextPathPoint.Z,
+		       DistanceToTarget);
 		if (DistanceToTarget <= RequiredDistanceToTarget)
 		{
 			NextPathPoint = GetNextPathPoint();
