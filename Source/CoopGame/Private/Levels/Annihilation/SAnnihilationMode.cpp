@@ -25,7 +25,7 @@ bool ASAnnihilationMode::AnyPlayerAlive()
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PlayerController = It->Get();
-		APawn* MyPawn = PlayerController->GetPawnOrSpectator();
+		APawn* MyPawn = PlayerController->GetPawn();
 		if (PlayerController && MyPawn)
 		{
 			USHealthComponent* HealthComponent = Cast<USHealthComponent>(

@@ -35,6 +35,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	USpringArmComponent* SpringArmComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category="Player")
 	float ZoomedFOV;

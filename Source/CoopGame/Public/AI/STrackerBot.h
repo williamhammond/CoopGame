@@ -6,6 +6,7 @@
 #include "Sound/SoundCue.h"
 #include "STrackerBot.generated.h"
 
+class UPawnSensingComponent;
 class USHealthComponent;
 class USphereComponent;
 
@@ -29,6 +30,17 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	USphereComponent* OverlapComponent;
 	
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	UPawnSensingComponent* PawnSensingComp;
+
+	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
+	float AggroRadius;
+
+	UPROPERTY()
+	APawn* Target;
+
+	UFUNCTION()
+	void OnPawnDetected(APawn* NoiseInstigator, const FVector& Location, float Volume);
 
 	UFUNCTION()
 	void OnHealthChanged(class USHealthComponent* OwningHealthComp, float
@@ -74,6 +86,8 @@ protected:
 
 	FTimerHandle TimerHandle_RefreshPath;
 	void RefreshPath();
+	void Move();
+
 
 public:
 	virtual void Tick(float DeltaTime) override;

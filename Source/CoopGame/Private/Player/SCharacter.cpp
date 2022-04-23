@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PawnMovementComponent.h"
@@ -21,6 +22,8 @@ ASCharacter::ASCharacter()
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArmComponent->SetupAttachment(RootComponent);
 	SpringArmComponent->bUsePawnControlRotation = true;
+
+	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitterComponent"));
 
 	ACharacter::GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	ACharacter::GetMovementComponent()->GetNavAgentPropertiesRef().bCanJump = true;
@@ -93,11 +96,19 @@ void ASCharacter::BeginPlay()
 void ASCharacter::MoveForward(float Magnitude)
 {
 	AddMovementInput(GetActorForwardVector() * Magnitude);
+	if (Role == ROLE_Authority && Magnitude > 0.01f)
+	{
+		MakeNoise(10.0f, this, GetActorLocation());
+	}
 }
 
 void ASCharacter::MoveRight(float Magnitude)
 {
 	AddMovementInput(GetActorRightVector() * Magnitude);
+	if (Role == ROLE_Authority && Magnitude > 0.01f)
+	{
+		MakeNoise(1.0f,  Instigator);
+	}
 }
 
 void ASCharacter::BeginCrouch()

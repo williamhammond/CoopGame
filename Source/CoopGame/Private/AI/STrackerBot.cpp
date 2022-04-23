@@ -13,8 +13,9 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/SphereComponent.h"
 #include "Engine/World.h"
+#include "Perception/PawnSensingComponent.h"
 
-static int32 DebugTrackerBotDrawing = 0;
+static int32 DebugTrackerBotDrawing = 1;
 FAutoConsoleVariableRef CVarDebugTrackerBotDrawing(TEXT("COOP.DebugTrackerBot"),
                                                    DebugTrackerBotDrawing,
                                                    TEXT("Draw Debug Lines for Tracker Bots"),
@@ -39,6 +40,16 @@ ASTrackerBot::ASTrackerBot()
 	OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	OverlapComponent->SetupAttachment(RootComponent);
 
+	AggroRadius = 500;
+	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+	PawnSensingComp->OnHearNoise.AddDynamic(this, &ASTrackerBot::OnPawnDetected);
+	PawnSensingComp->HearingThreshold = AggroRadius;
+	PawnSensingComp->LOSHearingThreshold = AggroRadius;
+	PawnSensingComp->SightRadius = AggroRadius;
+	PawnSensingComp->SetPeripheralVisionAngle(360);
+
+	Target = nullptr;
+
 	bUseVelocityChange = true;
 	MovementForce = 1000;
 	RequiredDistanceToTarget = 100;
@@ -54,6 +65,15 @@ void ASTrackerBot::BeginPlay()
 	{
 		RefreshPath();
 	}
+}
+
+void ASTrackerBot::OnPawnDetected(APawn* Detected, const FVector& Location, float Volume)
+{
+	if (DebugTrackerBotDrawing)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tracker detected %s"), *Detected->GetName());
+	}
+	Target = Detected;
 }
 
 void ASTrackerBot::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta,
@@ -77,34 +97,10 @@ void ASTrackerBot::OnHealthChanged(USHealthComponent* OwningHealthComp, float He
 
 FVector ASTrackerBot::GetNextPathPoint()
 {
-	AActor* BestTarget = nullptr;
-	float NearestTargetDistance = FLT_MAX;
-
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
-	{
-		APawn* Current = It->Get();
-		if (!Current || USHealthComponent::IsFriendly(Current, this))
-		{
-			continue;
-		}
-
-		USHealthComponent* CurrentHealthComponent = Cast<USHealthComponent>(
-			Current->GetComponentByClass(USHealthComponent::StaticClass()));
-		if (CurrentHealthComponent && CurrentHealthComponent->GetHealth() > 0.0f)
-		{
-			const float Distance = (Current->GetActorLocation() - GetActorLocation()).Size();
-			if (Distance < NearestTargetDistance)
-			{
-				NearestTargetDistance = Distance;
-				BestTarget = Current;
-			}
-		}
-	}
-
-	if (BestTarget)
+	if (Target)
 	{
 		UNavigationPath* NavPath =
-			UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), BestTarget);
+			UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), Target);
 
 
 		GetWorldTimerManager().ClearTimer(TimerHandle_RefreshPath);
@@ -159,16 +155,11 @@ void ASTrackerBot::RefreshPath()
 	NextPathPoint = GetNextPathPoint();
 }
 
-void ASTrackerBot::Tick(float DeltaTime)
+void ASTrackerBot::Move()
 {
-	Super::Tick(DeltaTime);
-
 	if (Role == ROLE_Authority && !bExploded)
 	{
 		const float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
-		UE_LOG(LogTemp, Warning, TEXT("Tracker %s: (%f, %f, %f) - (%f, %f, %f) = %f"), *GetName(), GetActorLocation().X,
-		       GetActorLocation().Y, GetActorLocation().Z, NextPathPoint.X, NextPathPoint.Y, NextPathPoint.Z,
-		       DistanceToTarget);
 		if (DistanceToTarget <= RequiredDistanceToTarget)
 		{
 			NextPathPoint = GetNextPathPoint();
@@ -195,6 +186,12 @@ void ASTrackerBot::Tick(float DeltaTime)
 			DrawDebugSphere(GetWorld(), NextPathPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
 		}
 	}
+}
+
+void ASTrackerBot::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	Move();
 }
 
 void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
