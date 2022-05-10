@@ -45,6 +45,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Player", meta=(ClampMin = 0.1, ClampMax = 100.0))
 	float ZoomInterpSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
 	bool bWantsToZoom;
 
 	float DefaultFOV;
