@@ -48,7 +48,7 @@ void ASWeapon::BeginPlay()
 
 void ASWeapon::Fire()
 {
-	if (Role < ROLE_Authority)
+	if (GetLocalRole() < ROLE_Authority)
 	{
 		ServerFire();
 	}
@@ -103,7 +103,7 @@ void ASWeapon::Fire()
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 	}
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		HitScanTrace.TraceTo = TracerEndpoint;
 	}

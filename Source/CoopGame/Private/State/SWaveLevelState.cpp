@@ -9,7 +9,7 @@ void ASWaveLevelState::OnRep_WaveState(EWaveState OldState)
 
 void ASWaveLevelState::SetWaveState(EWaveState NewState)
 {
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		const EWaveState OldState = WaveState;
 		WaveState = NewState;

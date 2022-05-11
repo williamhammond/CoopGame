@@ -61,7 +61,7 @@ ASTrackerBot::ASTrackerBot()
 void ASTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		RefreshPath();
 	}
@@ -126,7 +126,7 @@ void ASTrackerBot::SelfDestruct()
 	UGameplayStatics::PlaySoundAtLocation(this, ExplodeSound, GetActorLocation());
 	MeshComponent->SetVisibility(false, true);
 	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		TArray<AActor*> IgnoredActors;
 		IgnoredActors.Add(this);
@@ -157,7 +157,7 @@ void ASTrackerBot::RefreshPath()
 
 void ASTrackerBot::Move()
 {
-	if (Role == ROLE_Authority && !bExploded)
+	if (GetLocalRole() == ROLE_Authority && !bExploded)
 	{
 		const float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
 		if (DistanceToTarget <= RequiredDistanceToTarget)
@@ -204,7 +204,7 @@ void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
 	if (PlayerPawn && !USHealthComponent::IsFriendly(OtherActor, this))
 	{
-		if (Role == ROLE_Authority)
+		if (GetLocalRole() == ROLE_Authority)
 		{
 			GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, SelfDamageInterval,
 			                                true, 0.0f);
