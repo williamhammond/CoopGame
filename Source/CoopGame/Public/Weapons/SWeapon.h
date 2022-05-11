@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraShake.h"
+#include "Camera/CameraShakeBase.h"
 #include "GameFramework/Actor.h"
 #include "SWeapon.generated.h"
 
@@ -68,7 +68,7 @@ protected:
 	USoundBase* FireSound;
 
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
-	TSubclassOf<UCameraShake> FireCameraShake;
+	TSubclassOf<UCameraShakeBase> FireCameraShake;
 
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
 	float BaseDamage;

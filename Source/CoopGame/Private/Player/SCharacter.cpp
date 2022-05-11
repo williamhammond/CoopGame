@@ -78,7 +78,7 @@ void ASCharacter::BeginPlay()
 	DefaultFOV = CameraComponent->FieldOfView;
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -96,7 +96,7 @@ void ASCharacter::BeginPlay()
 void ASCharacter::MoveForward(float Magnitude)
 {
 	AddMovementInput(GetActorForwardVector() * Magnitude);
-	if (Role == ROLE_Authority && Magnitude > 0.01f)
+	if (GetLocalRole() == ROLE_Authority && Magnitude > 0.01f)
 	{
 		MakeNoise(10.0f, this, GetActorLocation());
 	}
@@ -105,9 +105,9 @@ void ASCharacter::MoveForward(float Magnitude)
 void ASCharacter::MoveRight(float Magnitude)
 {
 	AddMovementInput(GetActorRightVector() * Magnitude);
-	if (Role == ROLE_Authority && Magnitude > 0.01f)
+	if (GetLocalRole() == ROLE_Authority && Magnitude > 0.01f)
 	{
-		MakeNoise(1.0f,  Instigator);
+		MakeNoise(1.0f,  GetInstigator());
 	}
 }
 
