@@ -121,6 +121,15 @@ void ASCharacter::EndCrouch()
 	UnCrouch();
 }
 
+void ASCharacter::Jump()
+{
+	if (bWantsToZoom)
+	{
+		return;
+	}
+	Super::Jump();
+}
+
 void ASCharacter::Zoom()
 {
 	bWantsToZoom = true;

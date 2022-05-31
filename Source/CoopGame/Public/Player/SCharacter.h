@@ -27,6 +27,8 @@ protected:
 	void BeginCrouch();
 	void EndCrouch();
 
+	virtual void Jump() override;
+
 	void Zoom();
 	void EndZoom();
 
