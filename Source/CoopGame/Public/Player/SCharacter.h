@@ -29,7 +29,9 @@ protected:
 
 	virtual void Jump() override;
 
+	UFUNCTION(BlueprintCallable, Category="Player")
 	void Zoom();
+	UFUNCTION(BlueprintCallable, Category="Player")
 	void EndZoom();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
