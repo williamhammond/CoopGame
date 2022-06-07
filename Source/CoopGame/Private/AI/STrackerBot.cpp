@@ -4,18 +4,17 @@
 #include "ExceptionHandling.h"
 #include "SCharacter.h"
 #include "SHealthComponent.h"
+#include "STrackerBotController.h"
 #include "TimerManager.h"
 #include "Runtime/NavigationSystem/Public/NavigationSystem.h"
 #include "Runtime/NavigationSystem/Public/NavigationPath.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/Character.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/SphereComponent.h"
 #include "Engine/World.h"
-#include "Perception/PawnSensingComponent.h"
 
-static int32 DebugTrackerBotDrawing = 1;
+static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVarDebugTrackerBotDrawing(TEXT("COOP.DebugTrackerBot"),
                                                    DebugTrackerBotDrawing,
                                                    TEXT("Draw Debug Lines for Tracker Bots"),
@@ -40,14 +39,6 @@ ASTrackerBot::ASTrackerBot()
 	OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	OverlapComponent->SetupAttachment(RootComponent);
 
-	AggroRadius = 500;
-	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
-	PawnSensingComp->OnHearNoise.AddDynamic(this, &ASTrackerBot::OnPawnDetected);
-	PawnSensingComp->HearingThreshold = AggroRadius;
-	PawnSensingComp->LOSHearingThreshold = AggroRadius;
-	PawnSensingComp->SightRadius = AggroRadius;
-	PawnSensingComp->SetPeripheralVisionAngle(360);
-
 	Target = nullptr;
 
 	bUseVelocityChange = true;
@@ -65,15 +56,6 @@ void ASTrackerBot::BeginPlay()
 	{
 		RefreshPath();
 	}
-}
-
-void ASTrackerBot::OnPawnDetected(APawn* Detected, const FVector& Location, float Volume)
-{
-	if (DebugTrackerBotDrawing)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Tracker detected %s"), *Detected->GetName());
-	}
-	Target = Detected;
 }
 
 void ASTrackerBot::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta,
@@ -191,6 +173,8 @@ void ASTrackerBot::Move()
 void ASTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	const ASTrackerBotController* PlayerController = Cast<ASTrackerBotController>(GetController());
+	Target = PlayerController->GetTarget();
 	Move();
 }
 
@@ -201,7 +185,7 @@ void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		return;
 	}
-	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
+	const ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
 	if (PlayerPawn && !USHealthComponent::IsFriendly(OtherActor, this))
 	{
 		if (GetLocalRole() == ROLE_Authority)
