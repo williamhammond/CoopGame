@@ -11,6 +11,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Weapons/SWeapon.h"
 
 
@@ -23,7 +24,10 @@ ASCharacter::ASCharacter()
 	SpringArmComponent->SetupAttachment(RootComponent);
 	SpringArmComponent->bUsePawnControlRotation = true;
 
+	TeamId = FGenericTeamId(1);
 	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitterComponent"));
+	StimuliSourceComponent = CreateDefaultSubobject<
+		UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSourceComponent"));
 
 	ACharacter::GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	ACharacter::GetMovementComponent()->GetNavAgentPropertiesRef().bCanJump = true;
@@ -98,16 +102,18 @@ void ASCharacter::MoveForward(float Magnitude)
 	AddMovementInput(GetActorForwardVector() * Magnitude);
 	if (GetLocalRole() == ROLE_Authority && Magnitude > 0.01f)
 	{
-		MakeNoise(10.0f, this, GetActorLocation());
+		MakeNoise(1.0f, this, GetActorLocation());
 	}
 }
 
 void ASCharacter::MoveRight(float Magnitude)
 {
 	AddMovementInput(GetActorRightVector() * Magnitude);
-	if (GetLocalRole() == ROLE_Authority && Magnitude > 0.01f)
+	if (GetLocalRole() == ROLE_Authority &&
+		UKismetMathLibrary::Abs(Magnitude)
+		> 0.01f)
 	{
-		MakeNoise(1.0f,  GetInstigator());
+		MakeNoise(1.0f, GetInstigator(), GetActorLocation());
 	}
 }
 
@@ -138,6 +144,11 @@ void ASCharacter::Zoom()
 void ASCharacter::EndZoom()
 {
 	bWantsToZoom = false;
+}
+
+FGenericTeamId ASCharacter::GetGenericTeamId() const
+{
+	return TeamId;
 }
 
 void ASCharacter::StartFire()
