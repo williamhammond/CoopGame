@@ -5,13 +5,13 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
-#include "Components/PawnNoiseEmitterComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Perception/AISense_Hearing.h"
 #include "Weapons/SWeapon.h"
 
 
@@ -25,7 +25,6 @@ ASCharacter::ASCharacter()
 	SpringArmComponent->bUsePawnControlRotation = true;
 
 	TeamId = FGenericTeamId(1);
-	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitterComponent"));
 	StimuliSourceComponent = CreateDefaultSubobject<
 		UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSourceComponent"));
 
@@ -100,9 +99,9 @@ void ASCharacter::BeginPlay()
 void ASCharacter::MoveForward(float Magnitude)
 {
 	AddMovementInput(GetActorForwardVector() * Magnitude);
-	if (GetLocalRole() == ROLE_Authority && Magnitude > 0.01f)
+	if (GetLocalRole() == ROLE_Authority && UKismetMathLibrary::Abs(Magnitude) > 0.01f)
 	{
-		MakeNoise(1.0f, this, GetActorLocation());
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(), 1.0f, this, 0, "Noise");
 	}
 }
 
@@ -113,7 +112,7 @@ void ASCharacter::MoveRight(float Magnitude)
 		UKismetMathLibrary::Abs(Magnitude)
 		> 0.01f)
 	{
-		MakeNoise(1.0f, GetInstigator(), GetActorLocation());
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(), 1.0f, this, 0, "Noise");
 	}
 }
 

@@ -47,9 +47,6 @@ protected:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	UAIPerceptionStimuliSourceComponent* StimuliSourceComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category="Player")

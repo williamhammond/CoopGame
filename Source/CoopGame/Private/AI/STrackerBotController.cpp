@@ -4,7 +4,7 @@
 ASTrackerBotController::ASTrackerBotController()
 {
 	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
-	HearingConfig->HearingRange = 500;
+	HearingConfig->HearingRange = 2500;
 	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 	HearingConfig->DetectionByAffiliation.bDetectNeutrals = false;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = false;
