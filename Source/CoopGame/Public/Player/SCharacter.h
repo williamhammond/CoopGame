@@ -79,6 +79,9 @@ protected:
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category="Player")
 	bool bDied;
+	
+	UPROPERTY(Replicated, BlueprintReadOnly, Category="Player")
+	bool bIsMoving;
 
 	virtual void OnActorLoaded_Implementation() override;
 

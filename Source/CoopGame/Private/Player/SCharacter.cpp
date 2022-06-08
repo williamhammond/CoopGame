@@ -7,6 +7,7 @@
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,6 +20,9 @@ ASCharacter::ASCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bTickEvenWhenPaused = true;
+
+	bDied = false;
+	bIsMoving = false;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -99,21 +103,11 @@ void ASCharacter::BeginPlay()
 void ASCharacter::MoveForward(float Magnitude)
 {
 	AddMovementInput(GetActorForwardVector() * Magnitude);
-	if (GetLocalRole() == ROLE_Authority && UKismetMathLibrary::Abs(Magnitude) > 0.01f)
-	{
-		UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(), 1.0f, this, 0, "Noise");
-	}
 }
 
 void ASCharacter::MoveRight(float Magnitude)
 {
 	AddMovementInput(GetActorRightVector() * Magnitude);
-	if (GetLocalRole() == ROLE_Authority &&
-		UKismetMathLibrary::Abs(Magnitude)
-		> 0.01f)
-	{
-		UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(), 1.0f, this, 0, "Noise");
-	}
 }
 
 void ASCharacter::BeginCrouch()
@@ -187,6 +181,7 @@ void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 {
 	DOREPLIFETIME(ASCharacter, CurrentWeapon);
 	DOREPLIFETIME(ASCharacter, bDied);
+	DOREPLIFETIME(ASCharacter, bIsMoving);
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
@@ -196,6 +191,12 @@ void ASCharacter::Tick(float DeltaTime)
 	const float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
 	const float NewFOV = FMath::FInterpTo(CameraComponent->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 	CameraComponent->SetFieldOfView(NewFOV);
+
+	bIsMoving = !GetCharacterMovement()->Velocity.IsZero();
+	if (bIsMoving && GetLocalRole() == ROLE_Authority)
+	{
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(), 1.0f, this, 0, "Noise");
+	}
 }
 
 void ASCharacter::OnActorLoaded_Implementation()

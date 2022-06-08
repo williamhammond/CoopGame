@@ -173,9 +173,12 @@ void ASTrackerBot::Move()
 void ASTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	const ASTrackerBotController* PlayerController = Cast<ASTrackerBotController>(GetController());
-	Target = PlayerController->GetTarget();
-	Move();
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		const ASTrackerBotController* PlayerController = Cast<ASTrackerBotController>(GetController());
+		Target = PlayerController->GetTarget();
+		Move();
+	}
 }
 
 void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
