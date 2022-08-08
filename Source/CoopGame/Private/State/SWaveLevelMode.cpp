@@ -1,5 +1,6 @@
 ﻿#include "State/SWaveLevelMode.h"
 
+#include "AIController.h"
 #include "SHealthComponent.h"
 #include "TimerManager.h"
 #include "AI/STrackerBot.h"
@@ -64,13 +65,14 @@ void ASWaveLevelMode::CheckWaveState()
 	}
 
 	bIsAnyBotAlive = false;
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
+	for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
-		APawn* Current = Cast<ASTrackerBot>(It->Get());
+		const AAIController* Current = Cast<AAIController>(It->Get());
 		if (Current)
 		{
+			const auto Pawn = Current ->GetPawn();
 			USHealthComponent* HealthComponent = Cast<USHealthComponent>(
-				Current->GetComponentByClass(USHealthComponent::StaticClass()));
+				Pawn->GetComponentByClass(USHealthComponent::StaticClass()));
 			if (HealthComponent && HealthComponent->GetHealth() > 0.0f)
 			{
 				bIsAnyBotAlive = true;
