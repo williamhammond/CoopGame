@@ -44,7 +44,7 @@ void USHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, con
 	bIsDead = Health <= 0;
 	if (bIsDead)
 	{
-		ASWaveLevelMode* GameMode = Cast<ASWaveLevelMode>(GetWorld()->GetAuthGameMode());
+		const ASWaveLevelMode* GameMode = Cast<ASWaveLevelMode>(GetWorld()->GetAuthGameMode());
 		if (GameMode)
 		{
 			GameMode->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
@@ -54,7 +54,7 @@ void USHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, con
 
 void USHealthComponent::OnRep_Health(float OldHealth)
 {
-	float const Damage = Health - OldHealth;
+	const float Damage = Health - OldHealth;
 	OnHealthChanged.Broadcast(this, Health, Damage, nullptr, nullptr, nullptr);
 }
 
@@ -81,11 +81,11 @@ bool USHealthComponent::IsFriendly(AActor* A, AActor* B)
 		return true;
 	}
 
-	USHealthComponent* HealthComponentA = Cast<USHealthComponent>(
-		A->GetComponentByClass(USHealthComponent::StaticClass()));
+	const USHealthComponent* HealthComponentA = Cast<USHealthComponent>(
+		A->GetComponentByClass(StaticClass()));
 
-	USHealthComponent* HealthComponentB = Cast<USHealthComponent>(
-		B->GetComponentByClass(USHealthComponent::StaticClass()));
+	const USHealthComponent* HealthComponentB = Cast<USHealthComponent>(
+		B->GetComponentByClass(StaticClass()));
 
 	if (!HealthComponentA || !HealthComponentB)
 	{

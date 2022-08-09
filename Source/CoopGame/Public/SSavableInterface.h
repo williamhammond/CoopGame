@@ -17,5 +17,4 @@ class COOPGAME_API ISSavableInterface
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void OnActorLoaded();
-	
 };

@@ -17,7 +17,7 @@ void ASGrenadeLauncher::BeginPlay()
 
 void ASGrenadeLauncher::Fire()
 {
-	AActor* MyOwner = GetOwner();
+	const AActor* MyOwner = GetOwner();
 	if (!MyOwner)
 	{
 		return;

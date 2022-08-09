@@ -5,7 +5,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-
 bool ASGameModeBase::IsMissionSuccess_Implementation()
 {
 	return false;
@@ -13,7 +12,7 @@ bool ASGameModeBase::IsMissionSuccess_Implementation()
 
 bool ASGameModeBase::IsMissionFailure_Implementation()
 {
-	return false; 
+	return false;
 }
 
 

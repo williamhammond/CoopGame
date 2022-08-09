@@ -11,7 +11,6 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "Perception/AISense_Hearing.h"
 #include "Weapons/SWeapon.h"
 

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -41,7 +39,7 @@ protected:
 
 	void PlayFireEffects(FVector TracerEndpoint);
 
-	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint);
+	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint) const;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	TSubclassOf<UDamageType> DamageType;

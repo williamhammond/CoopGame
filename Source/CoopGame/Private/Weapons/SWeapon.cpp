@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "Weapons/SWeapon.h"
 
@@ -136,7 +134,7 @@ void ASWeapon::StartFire()
 
 void ASWeapon::StopFire()
 {
-	APawn* MyOwner = Cast<APawn>(GetOwner());
+	const APawn* MyOwner = Cast<APawn>(GetOwner());
 	if (MyOwner)
 	{
 		ASPlayerController* PlayerController = Cast<ASPlayerController>(MyOwner->GetController());
@@ -171,20 +169,20 @@ void ASWeapon::PlayFireEffects(FVector TracerEndpoint)
 		}
 	}
 
-	APawn* MyOwner = Cast<APawn>(GetOwner());
+	const APawn* MyOwner = Cast<APawn>(GetOwner());
 	if (MyOwner)
 	{
 		ASPlayerController* PlayerController = Cast<ASPlayerController>(MyOwner->GetController());
 		if (PlayerController)
 		{
-			PlayerController->ClientPlayCameraShake(FireCameraShake);
+			PlayerController->ClientStartCameraShake(FireCameraShake);
 		}
 	}
 }
 
-void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint)
+void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint) const
 {
-	UParticleSystem* SelectedEffect = nullptr;
+	UParticleSystem* SelectedEffect;
 	switch (SurfaceType)
 	{
 	case SURFACE_FLESHDEFAULT:

@@ -12,13 +12,13 @@ class COOPGAME_API ASGameModeBase : public AGameModeBase
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Spectating")
 	TSubclassOf<AActor> SpectatingViewpointClass;
-	
+
 	UFUNCTION(BlueprintNativeEvent, Category="GameMode")
 	bool IsMissionSuccess();
-	
+
 	UFUNCTION(BlueprintNativeEvent, Category="GameMode")
 	bool IsMissionFailure();
-	
+
 	virtual bool IsMissionSuccess_Implementation();
 	virtual bool IsMissionFailure_Implementation();
 
@@ -30,6 +30,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
 	void OnMissionCompleted(APawn* InstigatorPawn, bool bMissionSuccess);
-	
+
 	virtual void Tick(float DeltaTime) override;
 };

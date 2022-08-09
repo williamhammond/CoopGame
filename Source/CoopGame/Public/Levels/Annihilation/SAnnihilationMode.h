@@ -5,16 +5,16 @@
 #include "SAnnihilationMode.generated.h"
 
 UCLASS()
-class COOPGAME_API ASAnnihilationMode : public ASGameModeBase 
+class COOPGAME_API ASAnnihilationMode : public ASGameModeBase
 {
 	GENERATED_BODY()
 
 protected:
-	bool IsMissionSuccess_Implementation() override;
-	bool IsMissionFailure_Implementation() override;
+	virtual bool IsMissionSuccess_Implementation() override;
+	virtual bool IsMissionFailure_Implementation() override;
 
 	bool AnyPlayerAlive();
-	bool AnyVillainAlive();
+	bool AnyVillainAlive() const;
 public:
 	ASAnnihilationMode();
 };

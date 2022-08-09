@@ -43,19 +43,19 @@ void ASGrenade::Explode() const
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorTransform());
 	const TArray<AActor*> IgnoreActors = {};
 
-	AActor* Owner = GetOwner();
-	if (!Owner)
+	AActor* MyOwner = GetOwner();
+	if (!MyOwner)
 	{
 		return;
 	}
-	AController* Instigator = Owner->GetInstigatorController();
-	if (!Instigator)
+	AController* MyInstigator = MyOwner->GetInstigatorController();
+	if (!MyInstigator)
 	{
 		return;
 	}
 
 	UGameplayStatics::ApplyRadialDamage(this, 20.0f, GetActorLocation(), ExplosionRadius, DamageType, IgnoreActors,
-	                                    Owner, Instigator, true, ECC_Camera);
+	                                    MyOwner, MyInstigator, true, ECC_Camera);
 	DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 32, FColor::Red, true, 2.0f, 16, 2.0f);
 }
 
@@ -64,6 +64,7 @@ void ASGrenade::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+// DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_FiveParams( FComponentHitSignature, UPrimitiveComponent, OnComponentHit, UPrimitiveComponent*, HitComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, FVector, NormalImpulse, const FHitResult&, Hit );
 void ASGrenade::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                       FVector NormalImpulse, const FHitResult& Hit)
 {

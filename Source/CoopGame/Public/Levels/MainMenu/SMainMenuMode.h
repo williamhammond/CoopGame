@@ -1,13 +1,11 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "SMainMenuMode.generated.h"
 
 UCLASS()
-class COOPGAME_API ASMainMenuMode : public AGameModeBase 
+class COOPGAME_API ASMainMenuMode : public AGameModeBase
 {
 	GENERATED_BODY()
 };
