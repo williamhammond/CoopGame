@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraComponent.h"
 #include "GameFramework/SaveGame.h"
 
 #include "SSaveGame.generated.h"
@@ -11,13 +10,12 @@ struct FActorSaveData
 {
 	GENERATED_BODY()
 
-public:
 	UPROPERTY()
 	FName ActorName;
 
 	UPROPERTY()
 	FTransform Transform;
-	
+
 	UPROPERTY()
 	TArray<uint8> ByteData;
 };
@@ -27,7 +25,6 @@ struct FPlayerSaveData
 {
 	GENERATED_BODY()
 
-public:
 	UPROPERTY()
 	FString PlayerID;
 
@@ -42,7 +39,7 @@ public:
 
 	UPROPERTY()
 	FRotator Rotation;
-	
+
 	UPROPERTY()
 	bool bResumeAtTransform;
 };

@@ -28,8 +28,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Game Manager")
 	void SaveGame();
-	
+
 	UPROPERTY(BlueprintAssignable)
 	FOnSaveGameSignature OnSaveGameLoaded;
-	
 };

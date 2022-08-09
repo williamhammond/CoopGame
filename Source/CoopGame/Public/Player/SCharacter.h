@@ -40,7 +40,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	USpringArmComponent* SpringArmComponent;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	FGenericTeamId TeamId;
 
@@ -79,7 +79,7 @@ protected:
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category="Player")
 	bool bDied;
-	
+
 	UPROPERTY(Replicated, BlueprintReadOnly, Category="Player")
 	bool bIsMoving;
 

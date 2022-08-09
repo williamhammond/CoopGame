@@ -3,7 +3,6 @@
 #include "AIController.h"
 #include "SHealthComponent.h"
 #include "TimerManager.h"
-#include "AI/STrackerBot.h"
 #include "Engine/World.h"
 #include "Player/SPlayerState.h"
 
@@ -41,7 +40,8 @@ void ASWaveLevelMode::EndWave()
 
 void ASWaveLevelMode::PrepareForNextWave()
 {
-	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASWaveLevelMode::StartWave, TimeBetweenWaves, false);
+	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASWaveLevelMode::StartWave, TimeBetweenWaves,
+	                                false);
 	RespawnDeadPlayers();
 	SetWaveState(EWaveState::WaitingToStart);
 }
@@ -70,8 +70,8 @@ void ASWaveLevelMode::CheckWaveState()
 		const AAIController* Current = Cast<AAIController>(It->Get());
 		if (Current)
 		{
-			const auto Pawn = Current ->GetPawn();
-			USHealthComponent* HealthComponent = Cast<USHealthComponent>(
+			const auto Pawn = Current->GetPawn();
+			const USHealthComponent* HealthComponent = Cast<USHealthComponent>(
 				Pawn->GetComponentByClass(USHealthComponent::StaticClass()));
 			if (HealthComponent && HealthComponent->GetHealth() > 0.0f)
 			{
@@ -91,11 +91,11 @@ void ASWaveLevelMode::CheckAnyPlayerAlive()
 {
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		APlayerController* PlayerController = It->Get();
-		APawn* MyPawn = PlayerController->GetPawnOrSpectator();
+		const APlayerController* PlayerController = It->Get();
+		const APawn* MyPawn = PlayerController->GetPawnOrSpectator();
 		if (PlayerController && MyPawn)
 		{
-			USHealthComponent* HealthComponent = Cast<USHealthComponent>(
+			const USHealthComponent* HealthComponent = Cast<USHealthComponent>(
 				MyPawn->GetComponentByClass(USHealthComponent::StaticClass()));
 			if (ensure(HealthComponent) && HealthComponent->GetHealth() > 0.0f)
 			{
@@ -113,12 +113,12 @@ void ASWaveLevelMode::GameOver()
 	UE_LOG(LogTemp, Log, TEXT("Game over players died"));
 }
 
-void ASWaveLevelMode::SetWaveState(EWaveState NewState)
+void ASWaveLevelMode::SetWaveState(EWaveState NewState) const
 {
-	ASWaveLevelState* GameState = GetGameState<ASWaveLevelState>();
-	if (ensureAlways(GameState))
+	ASWaveLevelState* WaveState = GetGameState<ASWaveLevelState>();
+	if (ensureAlways(WaveState))
 	{
-		GameState->SetWaveState(NewState);
+		WaveState->SetWaveState(NewState);
 	}
 }
 
@@ -127,7 +127,7 @@ void ASWaveLevelMode::RespawnDeadPlayers()
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PlayerController = It->Get();
-		APawn* MyPawn = PlayerController->GetPawnOrSpectator();
+		const APawn* MyPawn = PlayerController->GetPawnOrSpectator();
 		if (PlayerController && !MyPawn)
 		{
 			RestartPlayer(PlayerController);

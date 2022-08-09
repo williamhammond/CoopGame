@@ -1,6 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "SSavableInterface.h"
@@ -10,7 +8,8 @@
 
 enum class EWaveState : uint8;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*,
+                                               KillerController);
 
 UCLASS()
 class COOPGAME_API ASWaveLevelMode : public AGameModeBase, public ISSavableInterface
@@ -27,7 +26,7 @@ protected:
 	void CheckWaveState();
 	void CheckAnyPlayerAlive();
 	void GameOver();
-	void SetWaveState(EWaveState NewState);
+	void SetWaveState(EWaveState NewState) const;
 	void RespawnDeadPlayers();
 
 	FTimerHandle TimerHandle_BotSpawn;

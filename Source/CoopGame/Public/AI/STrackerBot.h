@@ -19,7 +19,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	UStaticMeshComponent* MeshComponent;
 
@@ -28,7 +28,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category="Components")
 	USphereComponent* OverlapComponent;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	float AggroRadius;
 
@@ -37,8 +37,8 @@ protected:
 
 	UFUNCTION()
 	void OnHealthChanged(class USHealthComponent* OwningHealthComp, float
-	                      Health, float HealthDelta, const class UDamageType* DamageType,
-	                      class AController* InstigatedBy, AActor* DamageCauser);
+	                     Health, float HealthDelta, const class UDamageType* DamageType,
+	                     class AController* InstigatedBy, AActor* DamageCauser);
 
 	FVector GetNextPathPoint();
 	FVector NextPathPoint;
@@ -70,10 +70,10 @@ protected:
 	float ExplosionDamage;
 
 	bool bExploded;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	USoundCue* SelfDestructSound;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="TrackerBot")
 	USoundCue* ExplodeSound;
 

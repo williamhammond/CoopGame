@@ -4,9 +4,9 @@
 #include "Engine/World.h"
 #include "SHealthComponent.h"
 
-ASAnnihilationMode::ASAnnihilationMode ()
+ASAnnihilationMode::ASAnnihilationMode()
 {
-	HUDClass = ASCharacterHUD::StaticClass();	
+	HUDClass = ASCharacterHUD::StaticClass();
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -39,16 +39,16 @@ bool ASAnnihilationMode::AnyPlayerAlive()
 	return false;
 }
 
-bool ASAnnihilationMode::AnyVillainAlive()
+bool ASAnnihilationMode::AnyVillainAlive() const
 {
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
+	for (auto It = GetWorld()->GetPawnIterator(); It; ++It)
 	{
-		APawn* Pawn = It->Get();
+		const APawn* Pawn = It->Get();
 
 		if (Pawn &&
 			Pawn->Tags.Contains("villain"))
 		{
-			USHealthComponent* HealthComponent = Cast<USHealthComponent>(
+			const USHealthComponent* HealthComponent = Cast<USHealthComponent>(
 				Pawn->GetComponentByClass(USHealthComponent::StaticClass()));
 			if (ensure(HealthComponent) && HealthComponent->GetHealth() > 0.0f)
 			{
